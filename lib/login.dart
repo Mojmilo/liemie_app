@@ -11,6 +11,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  bool isLogged = true;
   @override
   Widget build(BuildContext context) {
     String login = '';
@@ -51,6 +52,11 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         }
                       },
+                      onChanged: (value) {
+                        setState(() {
+                          isLogged = true;
+                        });
+                      },
                     ),
                   ),
                 ],
@@ -84,6 +90,11 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         }
                       },
+                      onChanged: (value) {
+                        setState(() {
+                          isLogged = true;
+                        });
+                      },
                     ),
                   ),
                 ],
@@ -91,13 +102,37 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 20,
               ),
+              (() {
+                if (isLogged == false) {
+                  return Column(
+                    children: const <Widget>[
+                      Text(
+                        'Invalid login or password',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  );
+                } else {
+                  return const SizedBox(
+                    height: 0,
+                  );
+                }
+              }()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        testConnexion(login, password, context);
+                        var res = await testConnexion(login, password, context);
+                        setState(() {
+                          isLogged = res;
+                        });
                       }
                     },
                     child: const Text('Login'),

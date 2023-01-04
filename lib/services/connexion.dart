@@ -14,7 +14,6 @@ testConnexion(String login, String password, context) async {
   if (response.statusCode == 200) {
     var json = jsonDecode(response.body);
     if (json['status'] != 'false') {
-      // return json;
       if (json != false) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -24,11 +23,13 @@ testConnexion(String login, String password, context) async {
           ),
           (route) => false,
         );
+        return true;
       }
     } else {
-      // return false;
+      return false;
     }
   } else {
     // throw Exception('Failed to load data');
+    return false;
   }
 }
