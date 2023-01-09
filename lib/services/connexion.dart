@@ -18,7 +18,8 @@ testConnexion(String login, String password, context) async {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => HomePage(
-              arguments: {'login': login, 'password': password},
+              // arguments: {'login': login, 'password': password},
+              arguments: json,
             ),
           ),
           (route) => false,

@@ -12,8 +12,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    String login = widget.arguments['login'];
-    String password = widget.arguments['password'];
+    String id = widget.arguments['id'];
+    String nom = widget.arguments['nom'];
+    String prenom = widget.arguments['prenom'];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Liemie App'),
@@ -23,14 +24,19 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              // 'Login :',
-              'Login : ${login}',
+              'Id : ${id}',
             ),
             SizedBox(
               height: 20,
             ),
             Text(
-              'Password : ${password}',
+              'Nom : ${nom}',
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Prénom : ${prenom}',
             ),
           ],
         ),
