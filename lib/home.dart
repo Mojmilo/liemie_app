@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liemie_app/first.dart';
 import 'package:liemie_app/profile.dart';
+import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,6 +69,16 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 IconButton(
+                  onPressed: () async {
+                    final json = await Model.getVisitesUser(id);
+                    // print(json);
+                  },
+                  icon: const Icon(
+                    Icons.import_export,
+                    size: 40,
+                  ),
+                ),
+                IconButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -84,6 +95,24 @@ class _HomePageState extends State<HomePage> {
                     size: 40,
                   ),
                 )
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Column(
+              children: [
+                Row(
+                  children: const [
+                    Text(
+                      'Visite',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ],

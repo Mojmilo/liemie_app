@@ -40,7 +40,7 @@ class _FirstPageState extends State<FirstPage> {
               ),
             ),
             const Text(
-              'Specialized healthcare, on a single tech platform, simplifying access for anyone, anywhere.',
+              'You are a nursing specialist, on a single tech platform, simplifying access for anyone, anywhere.',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,

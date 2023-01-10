@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ testConnexion(String login, String password, context) async {
             ),
           );
           json['login'] = login;
-          json['password'] = password;
+          json['password'] = md5.convert(utf8.encode(password)).toString();
 
           WidgetsFlutterBinding.ensureInitialized();
           final Future<Database> database = openDatabase(
@@ -61,6 +62,8 @@ testConnexion(String login, String password, context) async {
 
           List<Map<String, dynamic>> queryRows =
               await db.rawQuery('SELECT * FROM user');
+
+          // print(queryRows);
 
           return true;
         }
@@ -89,7 +92,7 @@ testConnexion(String login, String password, context) async {
         await db.rawQuery('SELECT * FROM user');
 
     for (var row in queryRows) {
-      if (row['login'] == login && row['password'] == password) {
+      if (row['login'] == login && row['password'] == md5.convert(utf8.encode(password)).toString()) {
         // Navigator.of(context).pushAndRemoveUntil(
         //   MaterialPageRoute(
         //     builder: (context) => HomePage(

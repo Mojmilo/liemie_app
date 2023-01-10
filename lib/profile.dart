@@ -24,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           children: [
             const SizedBox(
-              height: 50,
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,10 +49,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
             const SizedBox(
-              height: 50,
+              height: 30,
             ),
             Container(
-              padding: const EdgeInsets.all(35),
+              padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
                 color: const Color(0xFFdcedff),
                 borderRadius: BorderRadius.circular(20),
@@ -116,6 +116,72 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1c50a7),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Share your',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFffffff),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'specialist profile',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFffffff),
+                        ),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(onPressed: () {}, child: 
+                  const Text('Share profile'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF32dba9),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Column(
+              children: [
+                Row(
+                  children: const [
+                    Text(
+                      'Specialist profile',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             const SizedBox(
               height: 50,

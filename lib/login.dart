@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
     String login = '';
     String password = '';
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF1c50a7),
       body: Form(
         key: _formKey,
@@ -26,9 +27,10 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 150,
-              ),
+              // const SizedBox(
+              //   height: 50,
+              // ),
+              const Spacer(),
               const Text(
                 'Hello,',
                 style: TextStyle(
@@ -232,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Pour revenir en arrière.',
+                    'For more information.',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -244,7 +246,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pop(context);
                     },
                     child: const Text(
-                      'Retour',
+                      'Go back',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
