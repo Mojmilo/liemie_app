@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:liemie_app/first.dart';
+import 'package:liemie_app/profile.dart';
+import 'package:page_transition/page_transition.dart';
 
 class HomePage extends StatefulWidget {
   // const HomePage({Key? key}) : super(key: key);
@@ -12,31 +15,76 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    String id = widget.arguments['id'];
+    int id = int.parse(widget.arguments['id'].toString());
     String nom = widget.arguments['nom'];
     String prenom = widget.arguments['prenom'];
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Liemie App'),
-      ),
-      body: Center(
+      body: Container(
+        padding: const EdgeInsets.all(30),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Id : ${id}',
+          children: [
+            const SizedBox(
+              height: 40,
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Nom : ${nom}',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Prénom : ${prenom}',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFdedddb),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Welcome back',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF8fa1b7),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          '${prenom}',
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        child: ProfilePage(
+                          arguments: widget.arguments,
+                        ),
+                        type: PageTransitionType.rightToLeft,
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.menu,
+                    size: 40,
+                  ),
+                )
+              ],
             ),
           ],
         ),

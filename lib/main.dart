@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liemie_app/first.dart';
 import 'package:liemie_app/home.dart';
 import 'package:liemie_app/login.dart';
+import 'package:liemie_app/profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,9 +21,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const FirstPage(),
-        '/home': (context) =>
-            const HomePage(arguments: {'login': '', 'password': ''}),
+        '/home': (context) => const HomePage(arguments: {}),
         '/login': (context) => const LoginPage(),
+        '/profile': (context) => const ProfilePage(arguments: {}),
       },
     );
   }
