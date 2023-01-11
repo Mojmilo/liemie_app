@@ -215,7 +215,7 @@ Widget visit(BuildContext context, {required Map visite}) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
                     Text(
-                      'Michaele',
+                      'Michael',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
