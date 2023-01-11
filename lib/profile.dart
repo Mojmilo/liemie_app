@@ -153,14 +153,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  ElevatedButton(onPressed: () {}, child: 
-                  const Text('Share profile'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF32dba9),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Share profile'),
+                    style: ElevatedButton.styleFrom(
+                      // backgroundColor: const Color(0xFF32dba9),
+                      primary: const Color(0xFF32dba9),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                     ),
-                  ),
                   ),
                 ],
               ),

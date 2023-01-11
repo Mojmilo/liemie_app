@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:liemie_app/first.dart';
 import 'package:liemie_app/profile.dart';
 import 'package:liemie_app/services/Model.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final visites = [];
   @override
   Widget build(BuildContext context) {
     int id = int.parse(widget.arguments['id'].toString());
@@ -71,7 +73,10 @@ class _HomePageState extends State<HomePage> {
                 IconButton(
                   onPressed: () async {
                     final json = await Model.getVisitesUser(id);
-                    // print(json);
+                    setState(() {
+                      visites.clear();
+                      visites.addAll(json);
+                    });
                   },
                   icon: const Icon(
                     Icons.import_export,
@@ -103,15 +108,38 @@ class _HomePageState extends State<HomePage> {
             Column(
               children: [
                 Row(
-                  children: const [
-                    Text(
-                      'Visite',
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Upcoming visits',
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    IconButton(
+                      onPressed: () {
+                        // Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward,
+                        size: 30,
+                        color: Color(0xFF1c50a7),
+                      ),
+                    ),
                   ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                      visites.length,
+                      (index) => visit(context, visite: visites[index]),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -120,4 +148,110 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+Widget visit(BuildContext context, {required Map visite}) {
+  print(visite);
+  return Container(
+    margin: const EdgeInsets.only(right: 20),
+    padding: const EdgeInsets.symmetric(
+      horizontal: 25,
+      vertical: 25,
+    ),
+    width: 170,
+    height: 220,
+    decoration: BoxDecoration(
+      color: const Color(0xFF1c50a7),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: const Color(0xFFdedddb),
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(
+                  color: const Color(0xFF1e79d6),
+                  width: 3,
+                ),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  // '5:45PM',
+                  '${DateTime.parse(visite['date_prevue']).hour}:${DateTime.parse(visite['date_prevue']).minute}',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  // 'Dec 7',
+                  '${DateFormat.MMM().format(DateTime.parse(visite['date_prevue']))} ${DateTime.parse(visite['date_prevue']).day}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Michael',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Simpson',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Show more'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                // backgroundColor: const Color(0xFF32dba9),
+                primary: const Color(0xFF32dba9),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }
