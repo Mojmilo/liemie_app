@@ -1,4 +1,4 @@
-class Visite {
+class Personne {
   final int id;
   final String nom;
   final String prenom;
@@ -13,7 +13,18 @@ class Visite {
   final String tel_port;
   final String mail;
 
-  Visite(this.id, this.nom, this.prenom, this.sexe, this.date_naiss,
-      this.date_deces, this.ad1, this.ad2, this.cp, this.ville, this.tel_fixe,
-      this.tel_port, this.mail);
+  Personne(
+      this.id,
+      this.nom,
+      this.prenom,
+      this.sexe,
+      this.date_naiss,
+      this.date_deces,
+      this.ad1,
+      this.ad2,
+      this.cp,
+      this.ville,
+      this.tel_fixe,
+      this.tel_port,
+      this.mail);
 }

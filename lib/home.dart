@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:liemie_app/first.dart';
+import 'package:liemie_app/models/Visite.dart';
 import 'package:liemie_app/profile.dart';
 import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
@@ -137,7 +138,8 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: List.generate(
                       visites.length,
-                      (index) => visit(context, visite: visites[index]),
+                      (index) =>
+                          visit(context, visite: visites[index], isFirst: true),
                     ),
                   ),
                 ),
@@ -150,8 +152,9 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget visit(BuildContext context, {required Map visite}) {
-  print(visite);
+Widget visit(BuildContext context,
+    {required Map visite, required bool isFirst}) {
+  // print(visite);
   return Container(
     margin: const EdgeInsets.only(right: 20),
     padding: const EdgeInsets.symmetric(
@@ -161,7 +164,10 @@ Widget visit(BuildContext context, {required Map visite}) {
     width: 170,
     height: 220,
     decoration: BoxDecoration(
-      color: const Color(0xFF1c50a7),
+      color: const {
+        true: Color(0xFF1c50a7),
+        false: Color(0xFFdcedff),
+      }[isFirst],
       borderRadius: BorderRadius.circular(20),
     ),
     child: Column(
@@ -188,19 +194,25 @@ Widget visit(BuildContext context, {required Map visite}) {
                 Text(
                   // '5:45PM',
                   '${DateTime.parse(visite['date_prevue']).hour}:${DateTime.parse(visite['date_prevue']).minute}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: const {
+                      true: Color(0xFFffffff),
+                      false: Color(0xFF32dba9),
+                    }[isFirst],
                   ),
                 ),
                 Text(
                   // 'Dec 7',
                   '${DateFormat.MMM().format(DateTime.parse(visite['date_prevue']))} ${DateTime.parse(visite['date_prevue']).day}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    color: const {
+                      true: Color(0xFFffffff),
+                      false: Color(0xFF8fa1b7),
+                    }[isFirst],
                   ),
                 ),
               ],
@@ -213,21 +225,29 @@ Widget visit(BuildContext context, {required Map visite}) {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Michael',
+                      // 'Michael',
+                      '${visite['prenom']}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: const {
+                          true: Color(0xFFffffff),
+                          false: Color(0xFF000000),
+                        }[isFirst],
                       ),
                     ),
                     Text(
-                      'Simpson',
+                      // 'Simpson',
+                      '${visite['nom']}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: const {
+                          true: Color(0xFFffffff),
+                          false: Color(0xFF000000),
+                        }[isFirst],
                       ),
                     ),
                   ],
@@ -239,11 +259,19 @@ Widget visit(BuildContext context, {required Map visite}) {
             ),
             ElevatedButton(
               onPressed: () {},
-              child: const Text('Show more'),
+              child: Text('Show more',
+                  style: TextStyle(
+                      color: const {
+                    true: Color(0xFFffffff),
+                    false: Color(0xFF1c50a7),
+                  }[isFirst])),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 // backgroundColor: const Color(0xFF32dba9),
-                primary: const Color(0xFF32dba9),
+                primary: const {
+                  true: Color(0xFF32dba9),
+                  false: Color(0xFFffffff),
+                }[isFirst],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
