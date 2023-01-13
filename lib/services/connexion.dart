@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:liemie_app/home.dart';
+import 'package:liemie_app/models/Visite.dart';
+import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -27,11 +29,17 @@ testConnexion(String login, String password, context) async {
           //   ),
           //   (route) => false,
           // );
+
+          // await Model.getVisitesUserDB(int.parse(json['id'].toString()));
+
+          await Model.getVisitesUser(int.parse(json['id'].toString()));
+
           Navigator.push(
             context,
             PageTransition(
               child: HomePage(
                 arguments: json,
+                visites: Visite.visites,
               ),
               type: PageTransitionType.fade,
             ),
@@ -92,7 +100,8 @@ testConnexion(String login, String password, context) async {
         await db.rawQuery('SELECT * FROM user');
 
     for (var row in queryRows) {
-      if (row['login'] == login && row['password'] == md5.convert(utf8.encode(password)).toString()) {
+      if (row['login'] == login &&
+          row['password'] == md5.convert(utf8.encode(password)).toString()) {
         // Navigator.of(context).pushAndRemoveUntil(
         //   MaterialPageRoute(
         //     builder: (context) => HomePage(
@@ -101,11 +110,14 @@ testConnexion(String login, String password, context) async {
         //   ),
         //   (route) => false,
         // );
+        await Model.getVisitesUser(int.parse(row['id'].toString()));
+
         Navigator.push(
           context,
           PageTransition(
             child: HomePage(
               arguments: row,
+              visites: Visite.visites,
             ),
             type: PageTransitionType.fade,
           ),

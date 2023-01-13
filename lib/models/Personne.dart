@@ -12,6 +12,7 @@ class Personne {
   final String tel_fixe;
   final String tel_port;
   final String mail;
+  static List<Personne> personnes = [];
 
   Personne(
       this.id,
@@ -27,4 +28,30 @@ class Personne {
       this.tel_fixe,
       this.tel_port,
       this.mail);
+
+  factory Personne.fromJson(Map<String, dynamic> json) {
+    return Personne(
+      json['id'],
+      json['nom'],
+      json['prenom'],
+      json['sexe'],
+      DateTime.parse(json['date_naiss']),
+      DateTime.now(), // DateTime.parse(json['date_deces'])
+      json['ad1'],
+      json['ad2'],
+      json['cp'],
+      json['ville'],
+      json['tel_fixe'],
+      json['tel_port'],
+      json['mail'],
+    );
+  }
+
+  // static getPersonnes(List<dynamic> json) {
+  //   List<Personne> personnes = [];
+  //   for (var i = 0; i < json.length; i++) {
+  //     personnes.add(Personne.fromJson(json[i]));
+  //   }
+  //   Personne.personnes = personnes;
+  // }
 }

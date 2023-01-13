@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liemie_app/first.dart';
 import 'package:liemie_app/home.dart';
+import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -198,6 +199,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               child: const Text('Logout'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Model.deleteAll();
+              },
+              child: const Text('Delete All'),
             ),
           ],
         ),

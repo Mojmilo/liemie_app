@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:liemie_app/first.dart';
+import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Visite.dart';
 import 'package:liemie_app/profile.dart';
 import 'package:liemie_app/services/Model.dart';
@@ -8,20 +9,23 @@ import 'package:page_transition/page_transition.dart';
 
 class HomePage extends StatefulWidget {
   // const HomePage({Key? key}) : super(key: key);
-  const HomePage({Key? key, required this.arguments}) : super(key: key);
+  const HomePage({Key? key, required this.arguments, required this.visites})
+      : super(key: key);
   final Map arguments;
+  final List<Visite> visites;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final visites = [];
+  // List<dynamic> visites = [];
   @override
   Widget build(BuildContext context) {
     int id = int.parse(widget.arguments['id'].toString());
     String nom = widget.arguments['nom'];
     String prenom = widget.arguments['prenom'];
+    // visites = widget.visites;
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(30),
@@ -73,10 +77,16 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    final json = await Model.getVisitesUser(id);
+                    // final json = await Model.getVisitesUser(id);
+                    // setState(() {
+                    //   visites.clear();
+                    //   visites.addAll(json);
+                    // });
+                    await Model.getVisitesUserDB(id);
+                    await Model.getVisitesUser(id);
                     setState(() {
-                      visites.clear();
-                      visites.addAll(json);
+                      widget.visites.clear();
+                      widget.visites.addAll(Visite.visites);
                     });
                   },
                   icon: const Icon(
@@ -137,9 +147,12 @@ class _HomePageState extends State<HomePage> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: List.generate(
-                      visites.length,
-                      (index) =>
-                          visit(context, visite: visites[index], isFirst: true),
+                      // visites.length,
+                      widget.visites.length,
+                      (index) => visit(context,
+                          // visite: visites[index],
+                          visite: widget.visites[index],
+                          isFirst: index > 0 ? false : true),
                     ),
                   ),
                 ),
@@ -152,8 +165,10 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+// Widget visit(BuildContext context,
+//     {required Map visite, required bool isFirst}) {
 Widget visit(BuildContext context,
-    {required Map visite, required bool isFirst}) {
+    {required Visite visite, required bool isFirst}) {
   // print(visite);
   return Container(
     margin: const EdgeInsets.only(right: 20),
@@ -193,7 +208,8 @@ Widget visit(BuildContext context,
               children: [
                 Text(
                   // '5:45PM',
-                  '${DateTime.parse(visite['date_prevue']).hour}:${DateTime.parse(visite['date_prevue']).minute}',
+                  // '${DateTime.parse(visite['date_prevue']).hour}:${DateTime.parse(visite['date_prevue']).minute}',
+                  '${visite.date_prevue.hour}:${visite.date_prevue.minute}',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -205,7 +221,8 @@ Widget visit(BuildContext context,
                 ),
                 Text(
                   // 'Dec 7',
-                  '${DateFormat.MMM().format(DateTime.parse(visite['date_prevue']))} ${DateTime.parse(visite['date_prevue']).day}',
+                  // '${DateFormat.MMM().format(DateTime.parse(visite['date_prevue']))} ${DateTime.parse(visite['date_prevue']).day}',
+                  '${DateFormat.MMM().format(visite.date_prevue)} ${visite.date_prevue.day}',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
@@ -228,7 +245,8 @@ Widget visit(BuildContext context,
                   children: [
                     Text(
                       // 'Michael',
-                      '${visite['prenom']}',
+                      // '${visite['prenom']}',
+                      '${visite.patient.prenom}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -240,7 +258,8 @@ Widget visit(BuildContext context,
                     ),
                     Text(
                       // 'Simpson',
-                      '${visite['nom']}',
+                      // '${visite['nom']}',
+                      '${visite.patient.nom}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

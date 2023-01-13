@@ -2,16 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Visite.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class Model {
-  static getVisitesUser(int id) async {
+  static getVisitesUserDB(int id) async {
     var url = Uri.parse(
         'https://www.btssio-carcouet.fr/ppe4/public/mesvisites/${id}');
-    var data = [];
+    bool res = false;
     try {
+      var data = [];
       final response = await http.get(url);
       data = json.decode(response.body);
 
@@ -21,43 +23,65 @@ class Model {
         version: 1,
       );
       final Database db = await database;
-      db.execute('DROP TABLE IF EXISTS visite');
-      db.execute(
-          'CREATE TABLE visite(id INTEGER PRIMARY KEY, patient INTEGER, infirmiere INTEGER, date_prevue TEXT, date_reelle TEXT, duree REAL, compte_rendu_infirmiere TEXT, compte_rendu_patient TEXT)');
 
-      db.execute('DROP TABLE IF EXISTS personne');
       db.execute(
-          'CREATE TABLE personne(id INTEGER PRIMARY KEY, nom TEXT, prenom TEXT, sexe TEXT, date_naiss TEXT, date_deces TEXT, ad1 TEXT, ad2 TEXT, cp TEXT, ville TEXT, tel_fixe TEXT, tel_port TEXT, mail TEXT)');
+          'CREATE TABLE IF NOT EXISTS visite(id INTEGER PRIMARY KEY, patient INTEGER, infirmiere INTEGER, date_prevue TEXT, date_reelle TEXT, duree REAL, compte_rendu_infirmiere TEXT, compte_rendu_patient TEXT)');
+      db.execute(
+          'CREATE TABLE IF NOT EXISTS personne(id INTEGER PRIMARY KEY, nom TEXT, prenom TEXT, sexe TEXT, date_naiss TEXT, date_deces TEXT, ad1 TEXT, ad2 TEXT, cp TEXT, ville TEXT, tel_fixe TEXT, tel_port TEXT, mail TEXT)');
+
       for (var i = 0; i < data.length; i++) {
         await db.insert(
           'visite',
           data[i],
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
-        await getPersonne(int.parse(data[i]['patient']));
+        await getPersonneDB(int.parse(data[i]['patient']));
       }
-      // List<Map<String, dynamic>> queryRows =
-      //     await db.rawQuery('SELECT * FROM visite');
+      res = true;
+    } catch (e) {
+      res = false;
+    }
+    return res;
+  }
 
-      // data = queryRows;
-
-      List<Map<String, dynamic>> queryRows = await db.rawQuery(
-          'SELECT * FROM visite JOIN personne ON visite.patient = personne.id');
+  static getVisitesUser(int id) async {
+    List<Visite> visites = [];
+    bool res = false;
+    try {
+      var data = [];
+      WidgetsFlutterBinding.ensureInitialized();
+      final Future<Database> database = openDatabase(
+        'liemie.db',
+        version: 1,
+      );
+      final Database db = await database;
+      List<Map<String, dynamic>> queryRows =
+          await db.rawQuery('SELECT * FROM visite WHERE infirmiere = ${id}');
 
       data = queryRows;
 
-      print(data);
+      List<Visite> visites = [];
+      // Visite.visites = [];
+      Personne.personnes = [];
+      for (var i = 0; i < data.length; i++) {
+        Personne personne =
+            await getPersonne(int.parse(data[i]['patient'].toString()));
+        visites.add(Visite.fromJson(data[i], personne));
+      }
+      Visite.visites = visites;
+      res = true;
     } catch (e) {
-      data = [];
+      res = false;
     }
-    return data;
+    return res;
   }
 
-  static getPersonne(int id) async {
+  static getPersonneDB(int id) async {
     var url =
         Uri.parse('https://www.btssio-carcouet.fr/ppe4/public/personne/${id}');
-    var data = [];
+    bool res = false;
     try {
+      var data = [];
       final response = await http.get(url);
       data = json.decode(response.body);
 
@@ -67,20 +91,50 @@ class Model {
         version: 1,
       );
       final Database db = await database;
-      await db.insert(
-        'personne',
-        data[0],
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-      List<Map<String, dynamic>> queryRows =
-          await db.rawQuery('SELECT * FROM personne');
-
-      data = queryRows;
-
-      // print(data);
+      for (var i = 0; i < data.length; i++) {
+        await db.insert(
+          'personne',
+          data[i],
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      res = true;
     } catch (e) {
-      data = [];
+      res = false;
     }
-    return data;
+    return res;
+  }
+
+  static getPersonne(int id) async {
+    Personne personne;
+
+    var data = [];
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows =
+        await db.rawQuery('SELECT * FROM personne WHERE id = ${id} LIMIT 1');
+
+    data = queryRows;
+
+    personne = Personne.fromJson(data[0]);
+    Personne.personnes.add(personne);
+    return personne;
+  }
+
+  static deleteAll() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+
+    // db.execute('DROP TABLE IF EXISTS user');
+    db.execute('DROP TABLE IF EXISTS visite');
+    db.execute('DROP TABLE IF EXISTS personne');
   }
 }
