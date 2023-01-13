@@ -51,14 +51,12 @@ testConnexion(String login, String password, context) async {
           final Future<Database> database = openDatabase(
             'liemie.db',
             version: 1,
-            onCreate: (db, version) {
-              return db.execute(
-                "CREATE TABLE user(id INTEGER PRIMARY KEY, login TEXT, password TEXT, nom TEXT, prenom TEXT, sexe TEXT, date_naiss TEXT, date_deces TEXT, ad1 TEXT, ad2 TEXT, cp TEXT, ville TEXT, tel_fixe TEXT, tel_port TEXT, mail TEXT)",
-              );
-            },
           );
 
           final Database db = await database;
+
+          db.execute(
+              'CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY, login TEXT, password TEXT, nom TEXT, prenom TEXT, sexe TEXT, date_naiss TEXT, date_deces TEXT, ad1 TEXT, ad2 TEXT, cp TEXT, ville TEXT, tel_fixe TEXT, tel_port TEXT, mail TEXT)');
 
           // await deleteDatabase(db.path);
 
@@ -87,14 +85,12 @@ testConnexion(String login, String password, context) async {
     final Future<Database> database = openDatabase(
       'liemie.db',
       version: 1,
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE user(id INTEGER PRIMARY KEY, login TEXT, password TEXT, nom TEXT, prenom TEXT, sexe TEXT, date_naiss TEXT, date_deces TEXT, ad1 TEXT, ad2 TEXT, cp TEXT, ville TEXT, tel_fixe TEXT, tel_port TEXT, mail TEXT)",
-        );
-      },
     );
 
     final Database db = await database;
+
+    db.execute(
+        'CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY, login TEXT, password TEXT, nom TEXT, prenom TEXT, sexe TEXT, date_naiss TEXT, date_deces TEXT, ad1 TEXT, ad2 TEXT, cp TEXT, ville TEXT, tel_fixe TEXT, tel_port TEXT, mail TEXT)');
 
     List<Map<String, dynamic>> queryRows =
         await db.rawQuery('SELECT * FROM user');
