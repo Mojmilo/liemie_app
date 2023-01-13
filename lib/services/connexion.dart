@@ -30,8 +30,6 @@ testConnexion(String login, String password, context) async {
           //   (route) => false,
           // );
 
-          // await Model.getVisitesUserDB(int.parse(json['id'].toString()));
-
           await Model.getVisitesUser(int.parse(json['id'].toString()));
 
           Navigator.push(
