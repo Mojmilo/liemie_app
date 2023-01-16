@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
 Widget visit(BuildContext context,
     {required Visite visite, required bool isFirst}) {
   // print(visite);
-  return Container(
+  return ElevatedButton(onPressed: () {print(visite.id);}, child: Container(
     margin: const EdgeInsets.only(right: 20),
     padding: const EdgeInsets.symmetric(
       horizontal: 25,
@@ -277,15 +277,25 @@ Widget visit(BuildContext context,
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () {},
-              child: Text('Show more',
+              onPressed: () {print(visite.patient.id);
+                Navigator.push(
+                      context,
+                      PageTransition(
+                        child: ProfilePage(
+                          arguments: {'id': visite.patient.id.toString(), 'nom': 'test', 'prenom': 'retest', 'sexe': 'reretest'},
+                        ),
+                        type: PageTransitionType.rightToLeft,
+                      ),
+                    );
+                },
+              child: Text('Show patient',
                   style: TextStyle(
                       color: const {
                     true: Color(0xFFffffff),
                     false: Color(0xFF1c50a7),
                   }[isFirst])),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 // backgroundColor: const Color(0xFF32dba9),
                 primary: const {
                   true: Color(0xFF32dba9),
@@ -300,5 +310,11 @@ Widget visit(BuildContext context,
         ),
       ],
     ),
+  ),
+  style: ElevatedButton.styleFrom(
+    padding: const EdgeInsets.all(0),
+    primary: const Color(0xFFffffff),
+    elevation: 0,
+    shadowColor: Colors.transparent,),
   );
 }
