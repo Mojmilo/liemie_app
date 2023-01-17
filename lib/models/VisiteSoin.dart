@@ -1,4 +1,5 @@
 import 'package:liemie_app/models/Personne.dart';
+import 'package:liemie_app/models/Soin.dart';
 
 class VisiteSoin {
   final int idVisite;
@@ -8,6 +9,7 @@ class VisiteSoin {
   final bool isPrevu;
   final bool isRealise;
   static List<VisiteSoin> visiteSoins = [];
+  final Soin soin;
 
   VisiteSoin(
     this.idVisite,
@@ -16,16 +18,18 @@ class VisiteSoin {
     this.idSoins,
     this.isPrevu,
     this.isRealise,
+    this.soin,
   );
 
-  factory VisiteSoin.fromJson(Map<String, dynamic> json) {
+  factory VisiteSoin.fromJson(Map<String, dynamic> json, Soin soin) {
     return VisiteSoin(
       json['visite'],
       json['id_categ_soins'],
       json['id_type_soins'],
       json['id_soins'],
       json['prevu'] == 1 ? true : false,
-      json['realise'] == 1 ? true : false
+      json['realise'] == 1 ? true : false,
+      soin,
     );
   }
 

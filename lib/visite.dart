@@ -4,6 +4,7 @@ import 'package:liemie_app/first.dart';
 import 'package:liemie_app/home.dart';
 import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Visite.dart';
+import 'package:liemie_app/models/VisiteSoin.dart';
 import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -51,7 +52,7 @@ class VisitePage extends StatefulWidget {
 //             const SizedBox(
 //               height: 30,
 //             ),
-//             Expanded(child: 
+//             Expanded(child:
 //               SingleChildScrollView(
 //                 scrollDirection: Axis.vertical,
 //                 child: Column(
@@ -368,14 +369,15 @@ class _VisitePageState extends State<VisitePage> {
             const SizedBox(
               height: 20,
             ),
-            // SingleChildScrollView(
-            //   scrollDirection: Axis.horizontal,
-            //   child: Row(
-            //     children: List.generate(2, (index) => soin(context)),
-            //   ),
-            // ),
-            // soin(context),
-            Soin(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.visite.visiteSoins.length,
+                itemBuilder: (context, index) {
+                  return SoinWidget(
+                      visiteSoin: widget.visite.visiteSoins[index]);
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -383,18 +385,20 @@ class _VisitePageState extends State<VisitePage> {
   }
 }
 
-class Soin extends StatefulWidget {
-  const Soin({super.key});
+class SoinWidget extends StatefulWidget {
+  const SoinWidget({super.key, required this.visiteSoin});
+  final VisiteSoin visiteSoin;
 
   @override
-  State<Soin> createState() => _SoinState();
+  State<SoinWidget> createState() => _SoinWidgetState();
 }
 
-class _SoinState extends State<Soin> {
+class _SoinWidgetState extends State<SoinWidget> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       width: double.infinity,
       // width: 200,
@@ -408,34 +412,49 @@ class _SoinState extends State<Soin> {
         children: [
           Row(
             children: [
-              IconButton(onPressed: () {
-                isChecked = !isChecked;
-                setState(() {
-                  isChecked = isChecked;
-                });
-              }, icon: isChecked ? const Icon(Icons.check_box, color: Color(0xFF1c50a7),) : const Icon(Icons.check_box_outline_blank_outlined, color: Color(0xFF1c50a7),),),
+              IconButton(
+                onPressed: () {
+                  isChecked = !isChecked;
+                  setState(() {
+                    isChecked = isChecked;
+                  });
+                },
+                icon: isChecked
+                    ? const Icon(
+                        Icons.check_box,
+                        color: Color(0xFF1c50a7),
+                      )
+                    : const Icon(
+                        Icons.check_box_outline_blank_outlined,
+                        color: Color(0xFF1c50a7),
+                      ),
+              ),
               SizedBox(
                 width: 10,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Soin 1',
-                    style: TextStyle(
+                    'Soin ${widget.visiteSoin.soin.id}',
+                    style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    'Libel',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF8fa1b7),
+                  Container(
+                    width: 200,
+                    child: Text(
+                      '${widget.visiteSoin.soin.libel}',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF8fa1b7),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ],
@@ -443,30 +462,30 @@ class _SoinState extends State<Soin> {
             ],
           ),
           Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  // '5:45PM',
-                  // '${DateTime.parse(visite['date_prevue']).hour}:${DateTime.parse(visite['date_prevue']).minute}',
-                  '${DateTime.parse('2016-11-17 20:31:10').hour}:${DateTime.parse('2016-11-17 20:31:10').minute}',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF32dba9),
-                  ),
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                // '5:45PM',
+                // '${DateTime.parse(visite['date_prevue']).hour}:${DateTime.parse(visite['date_prevue']).minute}',
+                '${DateTime.parse('2016-11-17 20:31:10').hour}:${DateTime.parse('2016-11-17 20:31:10').minute}',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF32dba9),
                 ),
-                Text(
-                  // 'Dec 7',
-                  // '${DateFormat.MMM().format(DateTime.parse(visite['date_prevue']))} ${DateTime.parse(visite['date_prevue']).day}',
-                  '${DateFormat.MMM().format(DateTime.parse('2016-11-17 20:31:10'))} ${DateTime.parse('2016-11-17 20:31:10').day}',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF8fa1b7),
-                  ),
+              ),
+              Text(
+                // 'Dec 7',
+                // '${DateFormat.MMM().format(DateTime.parse(visite['date_prevue']))} ${DateTime.parse(visite['date_prevue']).day}',
+                '${DateFormat.MMM().format(DateTime.parse('2016-11-17 20:31:10'))} ${DateTime.parse('2016-11-17 20:31:10').day}',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF8fa1b7),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
         ],
       ),
     );
