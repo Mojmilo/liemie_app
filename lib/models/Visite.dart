@@ -1,4 +1,5 @@
 import 'package:liemie_app/models/Personne.dart';
+import 'package:liemie_app/models/VisiteSoin.dart';
 
 class Visite {
   final int id;
@@ -12,6 +13,7 @@ class Visite {
   // final Personne personne;
   static List<Visite> visites = [];
   final Personne patient;
+  final List<VisiteSoin> visiteSoins;
 
   Visite(
     this.id,
@@ -23,9 +25,10 @@ class Visite {
     this.compte_rendu_infirmiere,
     this.compte_rendu_patient,
     this.patient,
+    this.visiteSoins,
   );
 
-  factory Visite.fromJson(Map<String, dynamic> json, Personne personne) {
+  factory Visite.fromJson(Map<String, dynamic> json, Personne personne, List<VisiteSoin> visiteSoins) {
     return Visite(
       json['id'],
       json['patient'],
@@ -36,6 +39,7 @@ class Visite {
       json['compte_rendu_infirmiere'],
       json['compte_rendu_patient'],
       personne,
+      visiteSoins,
     );
   }
 

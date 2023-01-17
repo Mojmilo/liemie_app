@@ -3,8 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:liemie_app/first.dart';
 import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Visite.dart';
+import 'package:liemie_app/models/VisiteSoin.dart';
+import 'package:liemie_app/patient.dart';
 import 'package:liemie_app/profile.dart';
 import 'package:liemie_app/services/Model.dart';
+import 'package:liemie_app/visite.dart';
 import 'package:page_transition/page_transition.dart';
 
 class HomePage extends StatefulWidget {
@@ -170,7 +173,18 @@ class _HomePageState extends State<HomePage> {
 Widget visit(BuildContext context,
     {required Visite visite, required bool isFirst}) {
   // print(visite);
-  return ElevatedButton(onPressed: () {print(visite.id);}, child: Container(
+  return ElevatedButton(onPressed: () {print(visite.id);
+    Navigator.push(
+        context,
+        PageTransition(
+          child: VisitePage(
+            visite: visite,
+          ),
+          type: PageTransitionType.bottomToTop,
+        ),
+    );
+    // print();
+  }, child: Container(
     margin: const EdgeInsets.only(right: 20),
     padding: const EdgeInsets.symmetric(
       horizontal: 25,
@@ -281,10 +295,10 @@ Widget visit(BuildContext context,
                 Navigator.push(
                       context,
                       PageTransition(
-                        child: ProfilePage(
-                          arguments: {'id': visite.patient.id.toString(), 'nom': 'test', 'prenom': 'retest', 'sexe': 'reretest'},
+                        child: PatientPage(
+                          patient: visite.patient,
                         ),
-                        type: PageTransitionType.rightToLeft,
+                        type: PageTransitionType.bottomToTop,
                       ),
                     );
                 },
