@@ -1,5 +1,6 @@
 import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Soin.dart';
+import 'package:liemie_app/services/Model.dart';
 
 class VisiteSoin {
   final int idVisite;
@@ -7,7 +8,7 @@ class VisiteSoin {
   final int idTypeSoins;
   final int idSoins;
   final bool isPrevu;
-  final bool isRealise;
+  bool isRealise;
   static List<VisiteSoin> visiteSoins = [];
   final Soin soin;
 
@@ -40,4 +41,9 @@ class VisiteSoin {
   //   }
   //   Visite.visites = visites;
   // }
+
+  setIsRealise(bool isRealise) {
+    this.isRealise = isRealise;
+    Model.setIsRealise(this.idVisite, this.idSoins, isRealise);
+  }
 }

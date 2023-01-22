@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liemie_app/first.dart';
-import 'package:liemie_app/home.dart';
+import 'package:liemie_app/app.dart';
 import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
@@ -49,8 +49,8 @@ class _PatientPageState extends State<PatientPage> {
             const SizedBox(
               height: 30,
             ),
-            Expanded(child: 
-              SingleChildScrollView(
+            Expanded(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
@@ -124,7 +124,8 @@ class _PatientPageState extends State<PatientPage> {
                       height: 20,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 15),
                       decoration: BoxDecoration(
                         color: const Color(0xFF1c50a7),
                         borderRadius: BorderRadius.circular(20),

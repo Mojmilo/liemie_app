@@ -1,169 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:liemie_app/first.dart';
+import 'package:liemie_app/home.dart';
 import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Soin.dart';
 import 'package:liemie_app/models/Visite.dart';
 import 'package:liemie_app/models/VisiteSoin.dart';
+import 'package:liemie_app/newVisite.dart';
 import 'package:liemie_app/patient.dart';
 import 'package:liemie_app/profile.dart';
 import 'package:liemie_app/services/Model.dart';
 import 'package:liemie_app/visite.dart';
 import 'package:page_transition/page_transition.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.personne, required this.visites})
+class AppPage extends StatefulWidget {
+  const AppPage({Key? key, required this.personne, required this.visites})
       : super(key: key);
   final Personne personne;
   final List<Visite> visites;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<AppPage> createState() => _AppPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AppPageState extends State<AppPage> {
   int indexItem = 0;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(30),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 20,
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: indexItem,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFdedddb),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Welcome back',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF8fa1b7),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        '${widget.personne.prenom}',
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              IconButton(
-                onPressed: () async {
-                  // final json = await Model.getVisitesUser(id);
-                  // setState(() {
-                  //   visites.clear();
-                  //   visites.addAll(json);
-                  // });
-                  await Model.getVisitesUserDB(widget.personne.id);
-                  await Model.getVisitesUser(widget.personne.id);
-                  setState(() {
-                    widget.visites.clear();
-                    widget.visites.addAll(Visite.visites);
-                  });
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => FirstPage(),
-                    ),
-                    (route) => false,
-                  );
-                },
-                icon: const Icon(
-                  Icons.import_export,
-                  size: 40,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageTransition(
-                      child: ProfilePage(
-                        personne: widget.personne,
-                      ),
-                      type: PageTransitionType.rightToLeft,
-                    ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.menu,
-                  size: 40,
-                ),
-              )
-            ],
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'New',
           ),
-          const SizedBox(
-            height: 30,
-          ),
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Upcoming visits',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      // Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.arrow_forward,
-                      size: 30,
-                      color: Color(0xFF1c50a7),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    // visites.length,
-                    widget.visites.length,
-                    (index) => visit(context,
-                        // visite: visites[index],
-                        visite: widget.visites[index],
-                        isFirst: index > 0 ? false : true),
-                  ),
-                ),
-              ),
-            ],
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
+        onTap: (index) {
+          setState(() {
+            indexItem = index;
+          });
+          if (index == 1) {}
+          if (index == 2) {
+            Navigator.push(
+              context,
+              PageTransition(
+                child: ProfilePage(
+                  personne: widget.personne,
+                ),
+                type: PageTransitionType.rightToLeft,
+              ),
+            );
+          }
+        },
+        selectedItemColor: const Color(0xFF1c50a7),
+        unselectedItemColor: const Color(0xFF8fa1b7),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.shifting,
       ),
+      body: indexItem == 0
+          ? HomePage(
+              personne: widget.personne,
+              visites: widget.visites,
+            )
+          : NewVisitePage(
+              personne: widget.personne,
+              visites: widget.visites,
+            ),
     );
   }
 }

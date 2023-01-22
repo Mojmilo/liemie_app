@@ -4,7 +4,8 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:liemie_app/home.dart';
+import 'package:liemie_app/app.dart';
+import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Visite.dart';
 import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
@@ -32,11 +33,13 @@ testConnexion(String login, String password, context) async {
 
           await Model.getVisitesUser(int.parse(json['id'].toString()));
 
+          Personne personne = Personne.fromJson(json);
+
           Navigator.push(
             context,
             PageTransition(
-              child: HomePage(
-                arguments: json,
+              child: AppPage(
+                personne: personne,
                 visites: Visite.visites,
               ),
               type: PageTransitionType.fade,
@@ -106,11 +109,14 @@ testConnexion(String login, String password, context) async {
         // );
         await Model.getVisitesUser(int.parse(row['id'].toString()));
 
+        Personne personne = Personne.fromJson(row);
+
         Navigator.push(
           context,
           PageTransition(
-            child: HomePage(
-              arguments: row,
+            child: AppPage(
+              // arguments: row,
+              personne: personne,
               visites: Visite.visites,
             ),
             type: PageTransitionType.fade,

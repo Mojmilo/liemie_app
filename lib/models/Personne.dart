@@ -38,10 +38,10 @@ class Personne {
       DateTime.parse(json['date_naiss']),
       DateTime.now(), // DateTime.parse(json['date_deces'])
       json['ad1'],
-      json['ad2'],
+      json['ad2'].toString(),
       json['cp'],
       json['ville'],
-      json['tel_fixe'],
+      json['tel_fixe'].toString(),
       json['tel_port'],
       json['mail'],
     );

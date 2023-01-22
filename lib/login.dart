@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liemie_app/home.dart';
+import 'package:liemie_app/app.dart';
 import 'package:liemie_app/services/connexion.dart';
 
 class LoginPage extends StatefulWidget {

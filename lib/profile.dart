@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:liemie_app/first.dart';
-import 'package:liemie_app/home.dart';
+import 'package:liemie_app/app.dart';
+import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key, required this.arguments}) : super(key: key);
-  final Map arguments;
+  const ProfilePage({Key? key, required this.personne}) : super(key: key);
+  // final Map arguments;
+  final Personne personne;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -15,10 +17,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    int id = int.parse(widget.arguments['id'].toString());
-    String nom = widget.arguments['nom'];
-    String prenom = widget.arguments['prenom'];
-    String sexe = widget.arguments['sexe'];
+    // int id = int.parse(widget.arguments['id'].toString());
+    // String nom = widget.arguments['nom'];
+    // String prenom = widget.arguments['prenom'];
+    // String sexe = widget.arguments['sexe'];
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(30),
@@ -79,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${prenom} ${nom}',
+                        '${widget.personne.prenom} ${widget.personne.nom}',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -89,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 5,
                       ),
                       (() {
-                        if (sexe == 'H') {
+                        if (widget.personne.sexe == 'H') {
                           return const Text(
                             'Male',
                             style: TextStyle(
@@ -99,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           );
                         } else {
-                          if (sexe == 'F') {
+                          if (widget.personne.sexe == 'F') {
                             return const Text(
                               'Female',
                               style: TextStyle(
@@ -183,6 +185,198 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ],
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'First name',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8fa1b7),
+                  ),
+                ),
+                Text(
+                  '${widget.personne.prenom}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF1c50a7),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Last name',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8fa1b7),
+                  ),
+                ),
+                Text(
+                  '${widget.personne.nom}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF1c50a7),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Date of birth',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8fa1b7),
+                  ),
+                ),
+                Text(
+                  '${widget.personne.date_naiss}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF1c50a7),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'City',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8fa1b7),
+                  ),
+                ),
+                Text(
+                  '${widget.personne.ville}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF1c50a7),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Address',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8fa1b7),
+                  ),
+                ),
+                Text(
+                  '${widget.personne.ad1}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF1c50a7),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'CP',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8fa1b7),
+                  ),
+                ),
+                Text(
+                  '${widget.personne.cp}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF1c50a7),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Phone number',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8fa1b7),
+                  ),
+                ),
+                Text(
+                  '${widget.personne.tel_port}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF1c50a7),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Email',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8fa1b7),
+                  ),
+                ),
+                Text(
+                  '${widget.personne.mail}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF1c50a7),
+                  ),
                 ),
               ],
             ),

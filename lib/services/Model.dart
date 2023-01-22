@@ -36,6 +36,11 @@ class Model {
       db.execute(
           'CREATE TABLE IF NOT EXISTS soin(id_categ_soins INTEGER, id_type_soins INTEGER, id INTEGER PRIMARY KEY, libel TEXT, description TEXT, coefficient REAL, date TEXT)');
 
+      db.execute('DELETE FROM visite');
+      db.execute('DELETE FROM personne');
+      db.execute('DELETE FROM visite_soin');
+      db.execute('DELETE FROM soin');
+
       await getSoinDB();
       for (var i = 0; i < data.length; i++) {
         await db.insert(
@@ -252,5 +257,87 @@ class Model {
     // db.execute('DROP TABLE IF EXISTS visite');
     // db.execute('DROP TABLE IF EXISTS personne');
     db.execute('drop table visite_soin');
+  }
+
+  static setIsRealise(int idVisite, int idSoins, bool isRealise) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows = await db.rawQuery(
+        'UPDATE visite_soin SET realise = ${isRealise} WHERE visite = ${idVisite} AND id_soins = ${idSoins}');
+  }
+
+  static setDateTimePrevue(int id, DateTime date_prevue) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows = await db.rawQuery(
+        'UPDATE visite SET date_prevue = "${date_prevue}" WHERE id = ${id}');
+  }
+
+  static setDateTimeReelle(int id, DateTime date_reelle) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows = await db.rawQuery(
+        'UPDATE visite SET date_reelle = "${date_reelle}" WHERE id = ${id}');
+  }
+
+  static setDuree(int id, double duree) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows = await db
+        .rawQuery('UPDATE visite SET duree = "${duree}" WHERE id = ${id}');
+  }
+
+  static setCompteRenduInfirmiere(
+      int id, String compte_rendu_infirmiere) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows = await db.rawQuery(
+        'UPDATE visite SET compte_rendu_infirmiere = "${compte_rendu_infirmiere}" WHERE id = ${id}');
+  }
+
+  static setCompteRenduPatient(int id, String compte_rendu_patient) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows = await db.rawQuery(
+        'UPDATE visite SET compte_rendu_patient = "${compte_rendu_patient}" WHERE id = ${id}');
+  }
+
+  static addVisite(Visite visite) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows = await db.rawQuery(
+        'INSERT INTO visite (patient, infirmiere, date_prevue, date_reelle, duree, compte_rendu_infirmiere, compte_rendu_patient) VALUES (${visite.idPatient}, ${visite.idInfirmiere}, "${visite.date_prevue}", "${visite.date_reelle}", ${visite.duree}, "${visite.compte_rendu_infirmiere}", "${visite.compte_rendu_patient}")');
+    List<Map<String, dynamic>> queryRows2 =
+        await db.rawQuery('SELECT * FROM visite ORDER BY id DESC LIMIT 1');
+    visite.id = queryRows2[0]['id'];
+    Visite.visites.add(visite);
   }
 }
