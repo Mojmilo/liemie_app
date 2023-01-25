@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:liemie_app/first.dart';
 import 'package:liemie_app/app.dart';
+import 'package:liemie_app/map.dart';
 import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/services/Model.dart';
 import 'package:page_transition/page_transition.dart';
@@ -137,7 +140,7 @@ class _PatientPageState extends State<PatientPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
                               Text(
-                                'Share his',
+                                'Show his',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -148,7 +151,7 @@ class _PatientPageState extends State<PatientPage> {
                                 height: 5,
                               ),
                               Text(
-                                'patient profile',
+                                'patient in the map',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -158,8 +161,54 @@ class _PatientPageState extends State<PatientPage> {
                             ],
                           ),
                           ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Share profile'),
+                            onPressed: () async {
+                              bool serviceEnabled;
+                              LocationPermission permission;
+
+                              serviceEnabled =
+                                  await Geolocator.isLocationServiceEnabled();
+                              if (!serviceEnabled) {
+                                print('Location services are disabled.');
+                              }
+
+                              permission = await Geolocator.checkPermission();
+                              if (permission == LocationPermission.denied) {
+                                permission =
+                                    await Geolocator.requestPermission();
+                                if (permission == LocationPermission.denied) {
+                                  print('Location permissions are denied');
+                                }
+                              }
+
+                              if (permission ==
+                                  LocationPermission.deniedForever) {
+                                print(
+                                    'Location permissions are permanently denied, we cannot request permissions.');
+                              }
+
+                              final List<Location> locations =
+                                  await locationFromAddress(widget.patient.ad1)
+                                      .catchError(
+                                (value) => {},
+                              );
+
+                              await Geolocator.getCurrentPosition().then(
+                                (value) => {
+                                  Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: MapPage(
+                                        patient: widget.patient,
+                                        position: value,
+                                        location: locations.first,
+                                      ),
+                                    ),
+                                  )
+                                },
+                              );
+                            },
+                            child: const Text('Show patient'),
                             style: ElevatedButton.styleFrom(
                               // backgroundColor: const Color(0xFF32dba9),
                               primary: const Color(0xFF32dba9),

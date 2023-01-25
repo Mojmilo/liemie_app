@@ -5,12 +5,16 @@ import 'package:liemie_app/app.dart';
 import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Visite.dart';
 import 'package:liemie_app/models/VisiteSoin.dart';
+import 'package:liemie_app/newSoin.dart';
+import 'package:liemie_app/newVisite.dart';
 import 'package:liemie_app/services/Model.dart';
 import 'package:liemie_app/visiteSettings.dart';
 import 'package:page_transition/page_transition.dart';
 
 class VisitePage extends StatefulWidget {
-  const VisitePage({Key? key, required this.visite}) : super(key: key);
+  const VisitePage({Key? key, required this.personne, required this.visite})
+      : super(key: key);
+  final Personne personne;
   final Visite visite;
 
   @override
@@ -72,12 +76,34 @@ class _VisitePageState extends State<VisitePage> {
               height: 50,
             ),
             Row(
-              children: const [
-                Text(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
                   'All treatments',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        child: NewSoinPage(
+                          personne: widget.personne,
+                          visite: widget.visite,
+                        ),
+                        type: PageTransitionType.rightToLeft,
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.add,
+                    size: 40,
+                    color: Color(0xFF1c50a7),
                   ),
                 ),
               ],
@@ -129,21 +155,27 @@ class _SoinWidgetState extends State<SoinWidget> {
         children: [
           Row(
             children: [
-              IconButton(
-                onPressed: () {
-                  widget.visiteSoin.setIsRealise(!widget.visiteSoin.isRealise);
-                  setState(() {});
-                },
-                icon: widget.visiteSoin.isRealise
-                    ? const Icon(
-                        Icons.check_box,
-                        color: Color(0xFF1c50a7),
-                      )
-                    : const Icon(
-                        Icons.check_box_outline_blank_outlined,
-                        color: Color(0xFF1c50a7),
-                      ),
-              ),
+              widget.visiteSoin.isPrevu
+                  ? IconButton(
+                      onPressed: () {
+                        widget.visiteSoin
+                            .setIsRealise(!widget.visiteSoin.isRealise);
+                        setState(() {});
+                      },
+                      icon: widget.visiteSoin.isRealise
+                          ? const Icon(
+                              Icons.check_box,
+                              color: Color(0xFF1c50a7),
+                            )
+                          : const Icon(
+                              Icons.check_box_outline_blank_outlined,
+                              color: Color(0xFF1c50a7),
+                            ),
+                    )
+                  : const Icon(
+                      Icons.check_box,
+                      color: Color(0xFF1c50a7),
+                    ),
               SizedBox(
                 width: 10,
               ),

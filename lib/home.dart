@@ -86,12 +86,12 @@ class _HomePageState extends State<HomePage> {
                     widget.visites.clear();
                     widget.visites.addAll(Visite.visites);
                   });
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => FirstPage(),
-                    ),
-                    (route) => false,
-                  );
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => FirstPage(),
+                  //   ),
+                  //   (route) => false,
+                  // );
                 },
                 icon: const Icon(
                   Icons.import_export,
@@ -155,6 +155,7 @@ class _HomePageState extends State<HomePage> {
                     widget.visites.length,
                     (index) => visit(context,
                         // visite: visites[index],
+                        personne: widget.personne,
                         visite: widget.visites[index],
                         isFirst: index > 0 ? false : true),
                   ),
@@ -171,7 +172,9 @@ class _HomePageState extends State<HomePage> {
 // Widget visit(BuildContext context,
 //     {required Map visite, required bool isFirst}) {
 Widget visit(BuildContext context,
-    {required Visite visite, required bool isFirst}) {
+    {required Personne personne,
+    required Visite visite,
+    required bool isFirst}) {
   // print(visite);
   return ElevatedButton(
     onPressed: () {
@@ -180,6 +183,7 @@ Widget visit(BuildContext context,
         context,
         PageTransition(
           child: VisitePage(
+            personne: personne,
             visite: visite,
           ),
           type: PageTransitionType.bottomToTop,

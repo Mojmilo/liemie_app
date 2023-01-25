@@ -49,16 +49,7 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.delete,
-                      size: 40,
-                      color: Color(0xFF1c50a7),
-                    ),
-                  ),
+                  const SizedBox(),
                 ],
               ),
               const SizedBox(
@@ -89,71 +80,87 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                   ),
                   Row(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: widget.visite.date_prevue.toString() !=
-                                    '-0001-11-30 00:00:00.000'
-                                ? widget.visite.date_prevue
-                                : DateTime.now(),
-                            firstDate: DateTime(0001),
-                            lastDate: DateTime(2100),
-                          ).then(
-                            (value) {
-                              widget.visite.setDateTimePrevue(
-                                DateTime(
-                                  value!.year,
-                                  value.month,
-                                  value.day,
-                                  widget.visite.date_prevue.hour,
-                                  widget.visite.date_prevue.minute,
-                                ),
-                              );
-                              setState(() {});
-                            },
-                          ).onError((error, stackTrace) => null);
-                        },
-                        child: Text(
-                          widget.visite.date_prevue.toString() !=
-                                  '-0001-11-30 00:00:00.000'
-                              ? DateFormat('dd/MM/yyyy')
-                                  .format(widget.visite.date_prevue)
-                              : 'Not set',
-                          style: const TextStyle(
-                            fontSize: 20,
-                          ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     showDatePicker(
+                      //       context: context,
+                      //       initialDate: widget.visite.date_prevue.toString() !=
+                      //               '-0001-11-30 00:00:00.000'
+                      //           ? widget.visite.date_prevue
+                      //           : DateTime.now(),
+                      //       firstDate: DateTime(0001),
+                      //       lastDate: DateTime(2100),
+                      //     ).then(
+                      //       (value) {
+                      //         widget.visite.setDateTimePrevue(
+                      //           DateTime(
+                      //             value!.year,
+                      //             value.month,
+                      //             value.day,
+                      //             widget.visite.date_prevue.hour,
+                      //             widget.visite.date_prevue.minute,
+                      //           ),
+                      //         );
+                      //         setState(() {});
+                      //       },
+                      //     ).onError((error, stackTrace) => null);
+                      //   },
+                      //   child: Text(
+                      //     widget.visite.date_prevue.toString() !=
+                      //             '-0001-11-30 00:00:00.000'
+                      //         ? DateFormat('dd/MM/yyyy')
+                      //             .format(widget.visite.date_prevue)
+                      //         : 'Not set',
+                      //     style: const TextStyle(
+                      //       fontSize: 20,
+                      //     ),
+                      //   ),
+                      // ),
+                      Text(
+                        widget.visite.date_prevue.toString() !=
+                                '-0001-11-30 00:00:00.000'
+                            ? DateFormat('dd/MM/yyyy')
+                                .format(widget.visite.date_prevue)
+                            : 'Not set',
+                        style: const TextStyle(
+                          fontSize: 20,
                         ),
                       ),
                       const SizedBox(
                         width: 10,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(
-                                widget.visite.date_prevue),
-                          ).then(
-                            (value) {
-                              widget.visite.setDateTimePrevue(
-                                DateTime(
-                                  widget.visite.date_prevue.year,
-                                  widget.visite.date_prevue.month,
-                                  widget.visite.date_prevue.day,
-                                  value!.hour,
-                                  value.minute,
-                                ),
-                              );
-                              setState(() {});
-                            },
-                          ).onError((error, stackTrace) => null);
-                        },
-                        child: Text(
-                          DateFormat('hh:mm').format(widget.visite.date_prevue),
-                          style: const TextStyle(
-                            fontSize: 20,
-                          ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     showTimePicker(
+                      //       context: context,
+                      //       initialTime: TimeOfDay.fromDateTime(
+                      //           widget.visite.date_prevue),
+                      //     ).then(
+                      //       (value) {
+                      //         widget.visite.setDateTimePrevue(
+                      //           DateTime(
+                      //             widget.visite.date_prevue.year,
+                      //             widget.visite.date_prevue.month,
+                      //             widget.visite.date_prevue.day,
+                      //             value!.hour,
+                      //             value.minute,
+                      //           ),
+                      //         );
+                      //         setState(() {});
+                      //       },
+                      //     ).onError((error, stackTrace) => null);
+                      //   },
+                      //   child: Text(
+                      //     DateFormat('hh:mm').format(widget.visite.date_prevue),
+                      //     style: const TextStyle(
+                      //       fontSize: 20,
+                      //     ),
+                      //   ),
+                      // ),
+                      Text(
+                        DateFormat('hh:mm').format(widget.visite.date_prevue),
+                        style: const TextStyle(
+                          fontSize: 20,
                         ),
                       ),
                     ],

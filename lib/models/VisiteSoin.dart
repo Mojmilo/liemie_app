@@ -1,5 +1,6 @@
 import 'package:liemie_app/models/Personne.dart';
 import 'package:liemie_app/models/Soin.dart';
+import 'package:liemie_app/models/Visite.dart';
 import 'package:liemie_app/services/Model.dart';
 
 class VisiteSoin {
@@ -45,5 +46,20 @@ class VisiteSoin {
   setIsRealise(bool isRealise) {
     this.isRealise = isRealise;
     Model.setIsRealise(this.idVisite, this.idSoins, isRealise);
+  }
+
+  static addVisiteSoin(Visite visite, Soin soin) {
+    VisiteSoin visiteSoin = VisiteSoin(
+      visite.id,
+      soin.idCategorieSoins,
+      soin.idTypeSoins,
+      soin.id,
+      false,
+      true,
+      soin,
+    );
+    visiteSoins.add(visiteSoin);
+    visite.visiteSoins.add(visiteSoin);
+    Model.addVisiteSoin(visiteSoin);
   }
 }

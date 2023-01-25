@@ -36,12 +36,18 @@ class Model {
       db.execute(
           'CREATE TABLE IF NOT EXISTS soin(id_categ_soins INTEGER, id_type_soins INTEGER, id INTEGER PRIMARY KEY, libel TEXT, description TEXT, coefficient REAL, date TEXT)');
 
-      db.execute('DELETE FROM visite');
-      db.execute('DELETE FROM personne');
-      db.execute('DELETE FROM visite_soin');
-      db.execute('DELETE FROM soin');
+      // db.execute('DELETE FROM visite');
+      // db.execute('DELETE FROM personne');
+      // db.execute('DELETE FROM visite_soin');
+      // db.execute('DELETE FROM soin');
+      db.execute(
+          'DELETE FROM visite_soin WHERE visite IN (SELECT id FROM visite WHERE infirmiere = ${id})');
+      db.execute('DELETE FROM visite WHERE infirmiere = ${id}');
+
+      // getSoins();
 
       await getSoinDB();
+      // getSoins();
       for (var i = 0; i < data.length; i++) {
         await db.insert(
           'visite',
@@ -188,6 +194,8 @@ class Model {
 
     // print(data);
 
+    getSoins();
+
     for (var i = 0; i < data.length; i++) {
       Soin soin = await getSoin(int.parse(data[i]['id_soins'].toString()));
       VisiteSoin visiteSoin = VisiteSoin.fromJson(data[i], soin);
@@ -225,9 +233,7 @@ class Model {
     return res;
   }
 
-  static getSoin(int id) async {
-    Soin soin;
-
+  static getSoins() async {
     var data = [];
     WidgetsFlutterBinding.ensureInitialized();
     final Future<Database> database = openDatabase(
@@ -236,14 +242,42 @@ class Model {
     );
     final Database db = await database;
     List<Map<String, dynamic>> queryRows =
-        await db.rawQuery('SELECT * FROM soin WHERE id = ${id} LIMIT 1');
+        await db.rawQuery('SELECT * FROM soin');
 
     data = queryRows;
 
-    soin = Soin.fromJson(data[0]);
-    Soin.soins.add(soin);
+    Soin.soins = [];
+
+    for (var i = 0; i < data.length; i++) {
+      Soin soin = Soin.fromJson(data[i]);
+      Soin.soins.add(soin);
+    }
+  }
+
+  static getSoin(int id) async {
+    Soin soin = Soin.soins.firstWhere((element) => element.id == id);
     return soin;
   }
+
+  // static getSoin(int id) async {
+  //   Soin soin;
+
+  //   var data = [];
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   final Future<Database> database = openDatabase(
+  //     'liemie.db',
+  //     version: 1,
+  //   );
+  //   final Database db = await database;
+  //   List<Map<String, dynamic>> queryRows =
+  //       await db.rawQuery('SELECT * FROM soin WHERE id = ${id} LIMIT 1');
+
+  //   data = queryRows;
+
+  //   soin = Soin.fromJson(data[0]);
+  //   Soin.soins.add(soin);
+  //   return soin;
+  // }
 
   static deleteAll() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -268,6 +302,17 @@ class Model {
     final Database db = await database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
         'UPDATE visite_soin SET realise = ${isRealise} WHERE visite = ${idVisite} AND id_soins = ${idSoins}');
+  }
+
+  static addVisiteSoin(VisiteSoin visiteSoin) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+    List<Map<String, dynamic>> queryRows = await db.rawQuery(
+        'INSERT INTO visite_soin (visite, id_categ_soins, id_type_soins, id_soins, prevu, realise) VALUES (${visiteSoin.idVisite}, ${visiteSoin.idCategorieSoins}, ${visiteSoin.idTypeSoins}, ${visiteSoin.idSoins}, ${visiteSoin.isPrevu}, ${visiteSoin.isRealise})');
   }
 
   static setDateTimePrevue(int id, DateTime date_prevue) async {

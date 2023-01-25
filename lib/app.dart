@@ -50,15 +50,15 @@ class _AppPageState extends State<AppPage> {
           });
           if (index == 1) {}
           if (index == 2) {
-            Navigator.push(
-              context,
-              PageTransition(
-                child: ProfilePage(
-                  personne: widget.personne,
-                ),
-                type: PageTransitionType.rightToLeft,
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   PageTransition(
+            //     child: ProfilePage(
+            //       personne: widget.personne,
+            //     ),
+            //     type: PageTransitionType.rightToLeft,
+            //   ),
+            // );
           }
         },
         selectedItemColor: const Color(0xFF1c50a7),
@@ -72,10 +72,15 @@ class _AppPageState extends State<AppPage> {
               personne: widget.personne,
               visites: widget.visites,
             )
-          : NewVisitePage(
-              personne: widget.personne,
-              visites: widget.visites,
-            ),
+          : indexItem == 1
+              ? HomePage(
+                  personne: widget.personne,
+                  visites: widget.visites,
+                )
+              : HomePage(
+                  personne: widget.personne,
+                  visites: widget.visites,
+                ),
     );
   }
 }
@@ -83,7 +88,9 @@ class _AppPageState extends State<AppPage> {
 // Widget visit(BuildContext context,
 //     {required Map visite, required bool isFirst}) {
 Widget visit(BuildContext context,
-    {required Visite visite, required bool isFirst}) {
+    {required Personne personne,
+    required Visite visite,
+    required bool isFirst}) {
   // print(visite);
   return ElevatedButton(
     onPressed: () {
@@ -92,6 +99,7 @@ Widget visit(BuildContext context,
         context,
         PageTransition(
           child: VisitePage(
+            personne: personne,
             visite: visite,
           ),
           type: PageTransitionType.bottomToTop,
