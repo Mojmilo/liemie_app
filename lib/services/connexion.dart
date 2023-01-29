@@ -31,6 +31,8 @@ testConnexion(String login, String password, context) async {
           //   (route) => false,
           // );
 
+          await Model.loadTable();
+          // await Model.getVisitesUserDB(int.parse(json['id'].toString()));
           await Model.getVisitesUser(int.parse(json['id'].toString()));
 
           Personne personne = Personne.fromJson(json);

@@ -15,23 +15,24 @@ class Personne {
   static List<Personne> personnes = [];
 
   Personne(
-      this.id,
-      this.nom,
-      this.prenom,
-      this.sexe,
-      this.date_naiss,
-      this.date_deces,
-      this.ad1,
-      this.ad2,
-      this.cp,
-      this.ville,
-      this.tel_fixe,
-      this.tel_port,
-      this.mail);
+    this.id,
+    this.nom,
+    this.prenom,
+    this.sexe,
+    this.date_naiss,
+    this.date_deces,
+    this.ad1,
+    this.ad2,
+    this.cp,
+    this.ville,
+    this.tel_fixe,
+    this.tel_port,
+    this.mail,
+  );
 
   factory Personne.fromJson(Map<String, dynamic> json) {
     return Personne(
-      json['id'],
+      int.parse(json['id'].toString()),
       json['nom'],
       json['prenom'],
       json['sexe'],

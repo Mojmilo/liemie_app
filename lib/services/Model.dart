@@ -11,6 +11,24 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class Model {
+  static loadTable() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final Future<Database> database = openDatabase(
+      'liemie.db',
+      version: 1,
+    );
+    final Database db = await database;
+
+    db.execute(
+        'CREATE TABLE IF NOT EXISTS visite(id INTEGER PRIMARY KEY, patient INTEGER, infirmiere INTEGER, date_prevue TEXT, date_reelle TEXT, duree REAL, compte_rendu_infirmiere TEXT, compte_rendu_patient TEXT)');
+    db.execute(
+        'CREATE TABLE IF NOT EXISTS personne(id INTEGER PRIMARY KEY, nom TEXT, prenom TEXT, sexe TEXT, date_naiss TEXT, date_deces TEXT, ad1 TEXT, ad2 TEXT, cp TEXT, ville TEXT, tel_fixe TEXT, tel_port TEXT, mail TEXT)');
+    db.execute(
+        'CREATE TABLE IF NOT EXISTS visite_soin(visite INTEGER, id_categ_soins INTEGER, id_type_soins INTEGER, id_soins INTEGER, prevu INTEGER, realise INTEGER, PRIMARY KEY(visite, id_soins))');
+    db.execute(
+        'CREATE TABLE IF NOT EXISTS soin(id_categ_soins INTEGER, id_type_soins INTEGER, id INTEGER PRIMARY KEY, libel TEXT, description TEXT, coefficient REAL, date TEXT)');
+  }
+
   static getVisitesUserDB(int id) async {
     var url = Uri.parse(
         'https://www.btssio-carcouet.fr/ppe4/public/mesvisites/${id}');
@@ -58,7 +76,9 @@ class Model {
         await getVisiteSoinDB(int.parse(data[i]['id']));
       }
       res = true;
+      // print('ok');
     } catch (e) {
+      // print(e);
       res = false;
     }
     return res;
@@ -93,7 +113,9 @@ class Model {
       }
       Visite.visites = visites;
       res = true;
+      // print('ok');
     } catch (e) {
+      // print(e);
       res = false;
     }
     return res;
@@ -122,7 +144,9 @@ class Model {
         );
       }
       res = true;
+      // print('ok');
     } catch (e) {
+      // print(e);
       res = false;
     }
     return res;
@@ -171,7 +195,9 @@ class Model {
         );
       }
       res = true;
+      // print('ok');
     } catch (e) {
+      // print(e);
       res = false;
     }
     return res;
@@ -227,7 +253,9 @@ class Model {
         );
       }
       res = true;
+      // print('ok');
     } catch (e) {
+      // print(e);
       res = false;
     }
     return res;
@@ -301,7 +329,7 @@ class Model {
     );
     final Database db = await database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
-        'UPDATE visite_soin SET realise = ${isRealise} WHERE visite = ${idVisite} AND id_soins = ${idSoins}');
+        'UPDATE visite_soin SET realise = ${isRealise ? 1 : 0} WHERE visite = ${idVisite} AND id_soins = ${idSoins}');
   }
 
   static addVisiteSoin(VisiteSoin visiteSoin) async {
@@ -312,7 +340,7 @@ class Model {
     );
     final Database db = await database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
-        'INSERT INTO visite_soin (visite, id_categ_soins, id_type_soins, id_soins, prevu, realise) VALUES (${visiteSoin.idVisite}, ${visiteSoin.idCategorieSoins}, ${visiteSoin.idTypeSoins}, ${visiteSoin.idSoins}, ${visiteSoin.isPrevu}, ${visiteSoin.isRealise})');
+        'INSERT INTO visite_soin (visite, id_categ_soins, id_type_soins, id_soins, prevu, realise) VALUES (${visiteSoin.idVisite}, ${visiteSoin.idCategorieSoins}, ${visiteSoin.idTypeSoins}, ${visiteSoin.idSoins}, ${visiteSoin.isPrevu ? 1 : 0}, ${visiteSoin.isRealise ? 1 : 0})');
   }
 
   static setDateTimePrevue(int id, DateTime date_prevue) async {

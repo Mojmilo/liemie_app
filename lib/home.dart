@@ -178,7 +178,6 @@ Widget visit(BuildContext context,
   // print(visite);
   return ElevatedButton(
     onPressed: () {
-      print(visite.id);
       Navigator.push(
         context,
         PageTransition(
