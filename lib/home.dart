@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Welcome back',
+                        'Welcome backe',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
