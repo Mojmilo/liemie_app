@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liemie_app/src/Db/Model/Personne.dart';
 import 'package:liemie_app/src/Services/Authentication.dart';
 
 class LoginPage extends StatefulWidget {
@@ -196,9 +197,13 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    final res = Authentication.authenticate(login, password, context);
+                    Personne? infirmiere = await Authentication.authenticate(login, password);
                     setState(() {
-                      isLogged = res;
+                      if(infirmiere != null) {
+                        isLogged = true;
+                      } else {
+                        isLogged = false;
+                      }
                     });
                   }
                 },

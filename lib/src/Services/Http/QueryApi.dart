@@ -16,13 +16,12 @@ class QueryApi
 
   static getPersonneByLoginAndPassword(String login, String password) async {
     Uri url = Uri.parse('https://www.btssio-carcouet.fr/ppe4/public/connect2/${login}/${password}/infirmiere');
-    var data = [];
+    Map<String, dynamic> data = {};
     try {
-      var data = [];
       final response = await http.get(url);
       data = json.decode(response.body);
     } catch (e) {
-      data = [];
+      data = {};
     }
     return data;
   }
@@ -108,7 +107,7 @@ class QueryApi
       data = json.decode(response.body);
 
       for (var i = 0; i < data.length; i++) {
-        Query.insertVisiteSoin(data[i]);
+        Query.insertVisiteSoinByData(data[i]);
       }
       res = true;
     } catch (e) {

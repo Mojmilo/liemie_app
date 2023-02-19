@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Connection
@@ -12,7 +13,8 @@ class Connection
     return _instance;
   }
 
-  Future<Database> load() async {
+  static Future<Database> load() async {
+    WidgetsFlutterBinding.ensureInitialized();
     final Database db = await database;
     return db;
   }

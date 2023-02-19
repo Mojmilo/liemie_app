@@ -28,14 +28,14 @@ class Visite
 
   factory Visite.fromJson(Map<String, dynamic> json, Personne patient, Personne infirmiere, List<VisiteSoin> visiteSoins) {
     return Visite(
-      json['id'],
+      int.parse(json['id'].toString()),
       patient,
       infirmiere,
       DateTime.parse(json['date_prevue'].toString()),
       DateTime.parse(json['date_reelle'].toString()),
       double.parse(json['duree'].toString()),
-      json['compte_rendu_infirmiere'],
-      json['compte_rendu_patient'],
+      json['compte_rendu_infirmiere'].toString(),
+      json['compte_rendu_patient'].toString(),
       visiteSoins,
     );
   }

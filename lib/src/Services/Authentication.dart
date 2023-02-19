@@ -19,61 +19,43 @@ class Authentication
 
   Authentication._internal();
 
-  static authenticate(String login, String password, context) async {
-    bool res = false;
+  static Future<Personne?> authenticate(String login, String password) async {
+    Personne? infirmiere;
     try {
       final data = await QueryApi.getPersonneByLoginAndPassword(login, password);
       if (data['status'] != 'false') {
         if (data != false) {
           initTable();
-          // Personne infirmiere = Query.selectPersonneByIdPersonne(data['id']);
-          Personne infirmiere = Personne.fromJson(data);
-          Query.selectVisitesInfirmiere(infirmiere);
 
-          Navigator.push(
-            context,
-            PageTransition(
-              child: AppPage(
-                personne: infirmiere,
-                visites: VisiteRepository.visites,
-              ),
-              type: PageTransitionType.fade,
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   PageTransition(
+          //     child: AppPage(
+          //       personne: infirmiere,
+          //       visites: VisiteRepository.visites,
+          //     ),
+          //     type: PageTransitionType.fade,
+          //   ),
+          // );
 
           data['login'] = login;
           data['password'] = md5.convert(utf8.encode(password)).toString();
 
           Query.insertPersonneByData(data);
 
-          res = true;
+          infirmiere = Personne.fromJson(data);
+          Query.selectVisitesInfirmiere(infirmiere);
         } else {
-          res = false;
+          infirmiere = null;
         }
       } else {
-        res = false;
+        infirmiere = null;
       }
     } catch (e) {
-      Personne infirmiere = Query.selectPersonneByLoginAndPassword(login, md5.convert(utf8.encode(password)).toString());
-      if (infirmiere != null) {
-
-        Navigator.push(
-          context,
-          PageTransition(
-            child: AppPage(
-              personne: infirmiere,
-              visites: VisiteRepository.visites,
-            ),
-            type: PageTransitionType.fade,
-          ),
-        );
-
-        res = true;
-      } else {
-        res = false;
-      }
+      throw e;
+      infirmiere = await Query.selectPersonneByLoginAndPassword(login, md5.convert(utf8.encode(password)).toString());
     }
-    return res;
+    return infirmiere;
   }
 
   static initTable() async {

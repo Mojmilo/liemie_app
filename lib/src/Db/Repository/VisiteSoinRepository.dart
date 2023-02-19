@@ -13,7 +13,7 @@ class VisiteSoinRepository
     visiteSoins.add(visiteSoin);
   }
 
-  static setVisites(List<VisiteSoin> visiteSoins) {
+  static setVisiteSoins(List<VisiteSoin> visiteSoins) {
     VisiteSoinRepository.visiteSoins = visiteSoins;
   }
 
