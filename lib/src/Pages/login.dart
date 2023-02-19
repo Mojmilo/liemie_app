@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:liemie_app/src/Db/Model/Personne.dart';
+import 'package:liemie_app/src/Db/Repository/VisiteRepository.dart';
+import 'package:liemie_app/src/Pages/app.dart';
 import 'package:liemie_app/src/Services/Authentication.dart';
+import 'package:page_transition/page_transition.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -201,6 +204,16 @@ class _LoginPageState extends State<LoginPage> {
                     setState(() {
                       if(infirmiere != null) {
                         isLogged = true;
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            child: AppPage(
+                              personne: infirmiere,
+                              visites: VisiteRepository.visites,
+                            ),
+                            type: PageTransitionType.fade,
+                          ),
+                        );
                       } else {
                         isLogged = false;
                       }
