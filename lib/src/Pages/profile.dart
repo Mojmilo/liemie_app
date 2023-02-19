@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:liemie_app/first.dart';
-import 'package:liemie_app/app.dart';
-import 'package:liemie_app/models/Personne.dart';
-import 'package:liemie_app/services/Model.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:liemie_app/src/Db/Model/Personne.dart';
+import 'package:liemie_app/src/Pages/first.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, required this.personne}) : super(key: key);
@@ -251,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 Text(
-                  '${widget.personne.date_naiss}',
+                  '${widget.personne.dateNaiss}',
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
@@ -347,7 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 Text(
-                  '${widget.personne.tel_port}',
+                  '${widget.personne.telPort}',
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
@@ -396,7 +393,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                Model.deleteAll();
+                // Model.deleteAll();
               },
               child: const Text('Delete All'),
             ),

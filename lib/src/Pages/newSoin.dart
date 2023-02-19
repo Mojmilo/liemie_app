@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:liemie_app/first.dart';
-import 'package:liemie_app/app.dart';
-import 'package:liemie_app/models/Personne.dart';
-import 'package:liemie_app/models/Soin.dart';
-import 'package:liemie_app/models/Visite.dart';
-import 'package:liemie_app/models/VisiteSoin.dart';
-import 'package:liemie_app/newVisite.dart';
-import 'package:liemie_app/services/Model.dart';
-import 'package:liemie_app/visite.dart';
-import 'package:liemie_app/visiteSettings.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:liemie_app/src/Db/Model/Personne.dart';
+import 'package:liemie_app/src/Db/Model/Soin.dart';
+import 'package:liemie_app/src/Db/Model/Visite.dart';
+import 'package:liemie_app/src/Db/Model/VisiteSoin.dart';
+import 'package:liemie_app/src/Db/Repository/SoinRepository.dart';
 
 class NewSoinPage extends StatefulWidget {
   const NewSoinPage({Key? key, required this.personne, required this.visite})
@@ -26,7 +20,7 @@ class _NewSoinPageState extends State<NewSoinPage> {
   final List<Soin> soins = [];
   @override
   Widget build(BuildContext context) {
-    for (var soin in Soin.soins) {
+    for (var soin in SoinRepository.soins) {
       bool isSoin = false;
       for (var visiteSoin in widget.visite.visiteSoins) {
         if (visiteSoin.soin.id != soin.id) {

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:liemie_app/first.dart';
-import 'package:liemie_app/app.dart';
-import 'package:liemie_app/map.dart';
-import 'package:liemie_app/models/Personne.dart';
-import 'package:liemie_app/services/Model.dart';
+import 'package:liemie_app/src/Db/Model/Personne.dart';
+import 'package:liemie_app/src/Pages/map.dart';
 import 'package:page_transition/page_transition.dart';
 
 class PatientPage extends StatefulWidget {
@@ -299,7 +296,7 @@ class _PatientPageState extends State<PatientPage> {
                               ),
                             ),
                             Text(
-                              '${widget.patient.date_naiss}',
+                              '${widget.patient.dateNaiss}',
                               style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
@@ -395,7 +392,7 @@ class _PatientPageState extends State<PatientPage> {
                               ),
                             ),
                             Text(
-                              '${widget.patient.tel_port}',
+                              '${widget.patient.telPort}',
                               style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,

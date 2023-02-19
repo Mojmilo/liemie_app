@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:liemie_app/first.dart';
-import 'package:liemie_app/app.dart';
-import 'package:liemie_app/login.dart';
-import 'package:liemie_app/profile.dart';
+import 'package:liemie_app/src/Pages/first.dart';
+import 'package:liemie_app/src/Pages/app.dart';
+import 'package:liemie_app/src/Pages/login.dart';
+import 'package:liemie_app/src/Pages/profile.dart';
 
 void main() {
   runApp(const MyApp());

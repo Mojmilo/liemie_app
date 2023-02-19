@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:liemie_app/first.dart';
-import 'package:liemie_app/app.dart';
-import 'package:liemie_app/models/Personne.dart';
-import 'package:liemie_app/models/Visite.dart';
-import 'package:liemie_app/models/VisiteSoin.dart';
-import 'package:liemie_app/services/Model.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:liemie_app/src/Db/Model/Visite.dart';
 
 class VisiteSettingsPage extends StatefulWidget {
   const VisiteSettingsPage({Key? key, required this.visite}) : super(key: key);
@@ -117,10 +111,10 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                       //   ),
                       // ),
                       Text(
-                        widget.visite.date_prevue.toString() !=
+                        widget.visite.datePrevue.toString() !=
                                 '-0001-11-30 00:00:00.000'
                             ? DateFormat('dd/MM/yyyy')
-                                .format(widget.visite.date_prevue)
+                                .format(widget.visite.datePrevue)
                             : 'Not set',
                         style: const TextStyle(
                           fontSize: 20,
@@ -158,7 +152,7 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                       //   ),
                       // ),
                       Text(
-                        DateFormat('hh:mm').format(widget.visite.date_prevue),
+                        DateFormat('hh:mm').format(widget.visite.datePrevue),
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -185,9 +179,9 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                         onTap: () {
                           showDatePicker(
                             context: context,
-                            initialDate: widget.visite.date_reelle.toString() !=
+                            initialDate: widget.visite.dateReelle.toString() !=
                                     '-0001-11-30 00:00:00.000'
-                                ? widget.visite.date_reelle
+                                ? widget.visite.dateReelle
                                 : DateTime.now(),
                             firstDate: DateTime(0001),
                             lastDate: DateTime(2100),
@@ -198,8 +192,8 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                                   value!.year,
                                   value.month,
                                   value.day,
-                                  widget.visite.date_reelle.hour,
-                                  widget.visite.date_reelle.minute,
+                                  widget.visite.dateReelle.hour,
+                                  widget.visite.dateReelle.minute,
                                 ),
                               );
                               setState(() {});
@@ -207,10 +201,10 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                           ).onError((error, stackTrace) => null);
                         },
                         child: Text(
-                          widget.visite.date_reelle.toString() !=
+                          widget.visite.dateReelle.toString() !=
                                   '-0001-11-30 00:00:00.000'
                               ? DateFormat('dd/MM/yyyy')
-                                  .format(widget.visite.date_reelle)
+                                  .format(widget.visite.dateReelle)
                               : 'Not set',
                           style: const TextStyle(
                             fontSize: 20,
@@ -225,14 +219,14 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                           showTimePicker(
                             context: context,
                             initialTime: TimeOfDay.fromDateTime(
-                                widget.visite.date_reelle),
+                                widget.visite.dateReelle),
                           ).then(
                             (value) {
                               widget.visite.setDateTimeReelle(
                                 DateTime(
-                                  widget.visite.date_reelle.year,
-                                  widget.visite.date_reelle.month,
-                                  widget.visite.date_reelle.day,
+                                  widget.visite.dateReelle.year,
+                                  widget.visite.dateReelle.month,
+                                  widget.visite.dateReelle.day,
                                   value!.hour,
                                   value.minute,
                                 ),
@@ -242,7 +236,7 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                           ).onError((error, stackTrace) => null);
                         },
                         child: Text(
-                          DateFormat('hh:mm').format(widget.visite.date_reelle),
+                          DateFormat('hh:mm').format(widget.visite.dateReelle),
                           style: const TextStyle(
                             fontSize: 20,
                           ),
@@ -370,7 +364,7 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                         width: double.infinity,
                         child: TextFormField(
                           maxLines: 3,
-                          initialValue: widget.visite.compte_rendu_infirmiere,
+                          initialValue: widget.visite.compteRenduInfirmiere,
                           style: const TextStyle(
                             //color: Color(0xFFffffff),
                             fontSize: 20,
@@ -428,7 +422,7 @@ class _VisiteSettingsPageState extends State<VisiteSettingsPage> {
                         width: double.infinity,
                         child: TextFormField(
                           maxLines: 3,
-                          initialValue: widget.visite.compte_rendu_patient,
+                          initialValue: widget.visite.compteRenduPatient,
                           style: const TextStyle(
                             //color: Color(0xFFffffff),
                             fontSize: 20,

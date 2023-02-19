@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:liemie_app/first.dart';
-import 'package:liemie_app/app.dart';
-import 'package:liemie_app/models/Personne.dart';
-import 'package:liemie_app/models/Visite.dart';
-import 'package:liemie_app/models/VisiteSoin.dart';
-import 'package:liemie_app/newSoin.dart';
-import 'package:liemie_app/newVisite.dart';
-import 'package:liemie_app/services/Model.dart';
-import 'package:liemie_app/visiteSettings.dart';
+import 'package:liemie_app/src/Db/Model/Personne.dart';
+import 'package:liemie_app/src/Db/Model/Visite.dart';
+import 'package:liemie_app/src/Db/Model/VisiteSoin.dart';
+import 'package:liemie_app/src/Pages/newSoin.dart';
+import 'package:liemie_app/src/Pages/visiteSettings.dart';
 import 'package:page_transition/page_transition.dart';
 
 class VisitePage extends StatefulWidget {

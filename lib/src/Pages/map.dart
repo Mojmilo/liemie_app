@@ -3,11 +3,7 @@ import 'package:flutter_map/plugin_api.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:liemie_app/first.dart';
-import 'package:liemie_app/app.dart';
-import 'package:liemie_app/models/Personne.dart';
-import 'package:liemie_app/services/Model.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:liemie_app/src/Db/Model/Personne.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage(

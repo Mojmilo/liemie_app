@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liemie_app/app.dart';
-import 'package:liemie_app/services/connexion.dart';
+import 'package:liemie_app/src/Services/Authentication.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -197,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    var res = await testConnexion(login, password, context);
+                    final res = Authentication.authenticate(login, password, context);
                     setState(() {
                       isLogged = res;
                     });
