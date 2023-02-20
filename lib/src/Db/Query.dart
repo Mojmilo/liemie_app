@@ -18,7 +18,7 @@ class Query
   }
 
   static createTablePersonne() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('CREATE TABLE IF NOT EXISTS personne ('
       'id INTEGER PRIMARY KEY,'
       'login TEXT,'
@@ -40,7 +40,7 @@ class Query
   }
 
   static createTableVisite() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('CREATE TABLE IF NOT EXISTS visite ('
       'id INTEGER PRIMARY KEY,'
       'patient INTEGER,'
@@ -57,7 +57,7 @@ class Query
   }
 
   static createTableSoin() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('CREATE TABLE IF NOT EXISTS soin ('
       'id_categ_soins INTEGER,'
       'id_type_soins INTEGER,'
@@ -73,7 +73,7 @@ class Query
   }
 
   static createTableVisiteSoin() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('CREATE TABLE IF NOT EXISTS visite_soin ('
       'id_visite INTEGER,'
       'id_categ_soins INTEGER,'
@@ -89,19 +89,19 @@ class Query
   }
 
   static deleteVisiteSoinByPersonne(Personne infirmiere) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('DELETE FROM visite_soin WHERE id_visite IN (SELECT id FROM visite WHERE infirmiere = ${infirmiere.id})');
   }
 
   static deleteVisiteByPersonne(Personne infirmiere) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('DELETE FROM visite WHERE infirmiere = ${infirmiere.id}');
   }
 
   static Future<List<Visite>> selectVisitesInfirmiere(Personne infirmiere) async {
     List<Visite> visitesResponse = [];
     try {
-      final Database db = await Connection.load();
+      final Database db = await Connection.database;
       List<Map<String, dynamic>> queryRows =
         await db.rawQuery('SELECT * FROM visite WHERE infirmiere = ${infirmiere.id}');
 
@@ -123,7 +123,7 @@ class Query
 
   static Future<Personne?> selectPersonneByIdPersonne(int idPersonne) async {
     Personne? personne;
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows =
       await db.rawQuery('SELECT * FROM personne WHERE id = ${idPersonne} LIMIT 1');
 
@@ -138,7 +138,7 @@ class Query
 
   static Future<List<VisiteSoin>> selectVisiteSoinsByIdVisite(int idVisite) async {
     List<VisiteSoin> visiteSoins = [];
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows =
       await db.rawQuery('SELECT * FROM visite_soin WHERE id_visite = ${idVisite}');
 
@@ -156,7 +156,7 @@ class Query
   }
 
   static selectSoins() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows =
       await db.rawQuery('SELECT * FROM soin');
 
@@ -170,7 +170,7 @@ class Query
 
   static Future<Soin?> selectSoinByIdSoin(int idSoin) async {
     Soin? soin;
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows =
       await db.rawQuery('SELECT * FROM soin WHERE id = ${idSoin} LIMIT 1');
 
@@ -185,7 +185,7 @@ class Query
 
   static Future<Visite?> selectVisiteByIdVisite(int idVisite) async {
     Visite? visite;
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows =
       await db.rawQuery('SELECT * FROM visite WHERE id = ${idVisite} LIMIT 1');
 
@@ -206,49 +206,49 @@ class Query
   }
 
   static updateVisiteSoinIsRealise(VisiteSoin visiteSoin) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
         'UPDATE visite_soin SET realise = ${visiteSoin.isRealise ? 1 : 0} WHERE id_visite = ${visiteSoin.visite.id} AND id_soin = ${visiteSoin.soin.id}');
   }
 
   static insertVisiteSoin(VisiteSoin visiteSoin) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
         'INSERT INTO visite_soin (id_visite, id_categ_soins, id_type_soins, id_soin, prevue, realise) VALUES (${visiteSoin.visite.id}, ${visiteSoin.idCategorieSoins}, ${visiteSoin.idTypeSoins}, ${visiteSoin.soin.id}, ${visiteSoin.isPrevu ? 1 : 0}, ${visiteSoin.isRealise ? 1 : 0})');
   }
 
   static updateVisiteDateTimePrevue(Visite visite, DateTime datePrevue) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
         'UPDATE visite SET date_prevue = "${datePrevue}" WHERE id = ${visite.id}');
   }
 
   static updateVisiteDateTimeReelle(Visite visite, DateTime dateReelle) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
         'UPDATE visite SET date_reelle = "${dateReelle}" WHERE id = ${visite.id}');
   }
 
   static updateVisiteDuree(Visite visite, double duree) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows = await db
         .rawQuery('UPDATE visite SET duree = "${duree}" WHERE id = ${visite.id}');
   }
 
   static updateVisiteCompteRenduInfirmiere(Visite visite, String compteRenduInfirmiere) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
         'UPDATE visite SET compte_rendu_infirmiere = "${compteRenduInfirmiere}" WHERE id = ${visite.id}');
   }
 
   static updateVisiteCompteRenduPatient(Visite visite, String compteRenduPatient) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows = await db.rawQuery(
         'UPDATE visite SET compte_rendu_patient = "${compteRenduPatient}" WHERE id = ${visite.id}');
   }
 
   static insertVisiteByData(data) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.insert(
       'visite',
       data,
@@ -257,7 +257,7 @@ class Query
   }
 
   static insertSoinByData(data) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.insert(
       'soin',
       data,
@@ -266,7 +266,7 @@ class Query
   }
 
   static insertPersonneByData(data) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.insert(
       'personne',
       data,
@@ -275,7 +275,7 @@ class Query
   }
 
   static insertVisiteSoinByData(data) async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.insert(
       'visite_soin',
       data,
@@ -285,7 +285,7 @@ class Query
 
   static Future<Personne?> selectPersonneByLoginAndPassword(String login, String password) async {
     Personne? personne;
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     List<Map<String, dynamic>> queryRows =
       await db.rawQuery('SELECT * FROM personne WHERE login = "${login}" AND password = "${password}" LIMIT 1');
 
@@ -298,22 +298,22 @@ class Query
   }
 
   static dropTablePersonne() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('DROP TABLE personne');
   }
 
   static dropTableVisite() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('DROP TABLE visite');
   }
 
   static dropTableSoin() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('DROP TABLE soin');
   }
 
   static dropTableVisiteSoin() async {
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     await db.execute('DROP TABLE visite_soin');
   }
 

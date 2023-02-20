@@ -107,7 +107,16 @@ class QueryApi
       data = json.decode(response.body);
 
       for (var i = 0; i < data.length; i++) {
-        Query.insertVisiteSoinByData(data[i]);
+        var newData = {
+          'id_visite': data[i]['visite'],
+          'id_soin': data[i]['soin'],
+          'id_categ_soins': data[i]['id_categ_soins'],
+          'id_type_soins': data[i]['id_type_soins'],
+          'prevue': data[i]['prevu'],
+          'realise': data[i]['realise'],
+        };
+
+        Query.insertVisiteSoinByData(newData);
       }
       res = true;
     } catch (e) {

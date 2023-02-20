@@ -13,11 +13,5 @@ class Connection
     return _instance;
   }
 
-  static Future<Database> load() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    final Database db = await database;
-    return db;
-  }
-
   Connection._internal();
 }

@@ -4,10 +4,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
   test('loadConnection', () async {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-    final Database db = await Connection.load();
+    final Database db = await Connection.database;
     expect(db, isNotNull);
   });
 }
