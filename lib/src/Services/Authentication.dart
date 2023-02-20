@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -20,42 +21,48 @@ class Authentication
   Authentication._internal();
 
   static Future<Personne?> authenticate(String login, String password) async {
-    Personne? infirmiere;
     try {
+      Personne? infirmiere;
+
       final data = await QueryApi.getPersonneByLoginAndPassword(login, password);
-      if (data['status'] != 'false') {
-        if (data != false) {
-          initTable();
 
-          // Navigator.push(
-          //   context,
-          //   PageTransition(
-          //     child: AppPage(
-          //       personne: infirmiere,
-          //       visites: VisiteRepository.visites,
-          //     ),
-          //     type: PageTransitionType.fade,
-          //   ),
-          // );
+      if(data != null) {
+        if (data['status'] != 'false') {
+          if (data != false) {
+            initTable();
 
-          data['login'] = login;
-          data['password'] = md5.convert(utf8.encode(password)).toString();
+            // Navigator.push(
+            //   context,
+            //   PageTransition(
+            //     child: AppPage(
+            //       personne: infirmiere,
+            //       visites: VisiteRepository.visites,
+            //     ),
+            //     type: PageTransitionType.fade,
+            //   ),
+            // );
 
-          Query.insertPersonneByData(data);
+            data['login'] = login;
+            data['password'] = md5.convert(utf8.encode(password)).toString();
 
-          infirmiere = Personne.fromJson(data);
-          Query.selectVisitesInfirmiere(infirmiere);
+            Query.insertPersonneByData(data);
+
+            infirmiere = Personne.fromJson(data);
+            Query.selectVisitesInfirmiere(infirmiere);
+          } else {
+            infirmiere = null;
+          }
         } else {
           infirmiere = null;
         }
       } else {
-        infirmiere = null;
+        infirmiere = await Query.selectPersonneByLoginAndPassword(login, md5.convert(utf8.encode(password)).toString());
       }
+
+      return infirmiere;
     } catch (e) {
-      throw e;
-      infirmiere = await Query.selectPersonneByLoginAndPassword(login, md5.convert(utf8.encode(password)).toString());
+      rethrow;
     }
-    return infirmiere;
   }
 
   static initTable() async {
