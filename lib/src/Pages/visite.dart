@@ -151,7 +151,7 @@ class _SoinWidgetState extends State<SoinWidget> {
         children: [
           Row(
             children: [
-              widget.visiteSoin.isPrevu
+              !widget.visiteSoin.isPrevu
                   ? IconButton(
                       onPressed: () {
                         widget.visiteSoin

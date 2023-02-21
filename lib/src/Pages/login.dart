@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liemie_app/src/Db/Model/Personne.dart';
+import 'package:liemie_app/src/Db/Query.dart';
 import 'package:liemie_app/src/Db/Repository/VisiteRepository.dart';
 import 'package:liemie_app/src/Pages/app.dart';
 import 'package:liemie_app/src/Services/Authentication.dart';

@@ -24,7 +24,7 @@ class Soin
       json['libel'].toString(),
       json['description'].toString(),
       double.parse(json['coefficient'].toString()),
-      DateTime.parse(json['date'].toString()),
+      json['date'] == null ? DateTime.parse('0001-11-30') : json['date'].toString() == '' ? DateTime.parse('0001-11-30') : DateTime.parse(json['date'].toString()),
       int.parse(json['id_categ_soins'].toString()),
       int.parse(json['id_type_soins'].toString()),
     );

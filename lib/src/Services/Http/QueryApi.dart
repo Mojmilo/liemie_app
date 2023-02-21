@@ -41,6 +41,8 @@ class QueryApi
         final response = await http.get(url);
         data = json.decode(response.body);
 
+        //await Query.dropTableSoin(); // TODO A voir
+
         initTable();
         await Query.deleteVisiteSoinByPersonne(infirmiere);
         await Query.deleteVisiteByPersonne(infirmiere);

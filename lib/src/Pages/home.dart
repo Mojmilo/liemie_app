@@ -9,6 +9,8 @@ import 'package:liemie_app/src/Pages/profile.dart';
 import 'package:liemie_app/src/Pages/visite.dart';
 import 'package:liemie_app/src/Services/Http/QueryApi.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.personne, required this.visites})
@@ -43,6 +45,11 @@ class _HomePageState extends State<HomePage> {
                       color: const Color(0xFFdedddb),
                       borderRadius: BorderRadius.circular(50),
                     ),
+                    child: const Icon(
+                      Icons.person,
+                      size: 40,
+                      color: Color(0xFFffffff),
+                    ),
                   ),
                   const SizedBox(
                     width: 20,
@@ -74,23 +81,13 @@ class _HomePageState extends State<HomePage> {
               ),
               IconButton(
                 onPressed: () async {
-                  // final json = await Model.getVisitesUser(id);
-                  // setState(() {
-                  //   visites.clear();
-                  //   visites.addAll(json);
-                  // });
-                  QueryApi.getVisitesInfirmiere(widget.personne);
-                  Query.selectVisitesInfirmiere(widget.personne);
+                  bool res = await QueryApi.getVisitesInfirmiere(widget.personne);
+                  List<Visite> visites = await Query.selectVisitesInfirmiere(widget.personne);
+
                   setState(() {
                     widget.visites.clear();
                     widget.visites.addAll(VisiteRepository.visites);
                   });
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => FirstPage(),
-                  //   ),
-                  //   (route) => false,
-                  // );
                 },
                 icon: const Icon(
                   Icons.import_export,
@@ -152,11 +149,20 @@ class _HomePageState extends State<HomePage> {
                   children: List.generate(
                     // visites.length,
                     widget.visites.length,
-                    (index) => visit(context,
-                        // visite: visites[index],
-                        personne: widget.personne,
-                        visite: widget.visites[index],
-                        isFirst: index > 0 ? false : true),
+                    (index) => Container(
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: index > 0 ? 20 : 0,
+                          ),
+                          visit(context,
+                              // visite: visites[index],
+                              personne: widget.personne,
+                              visite: widget.visites[index],
+                              isFirst: index > 0 ? false : true),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -175,8 +181,8 @@ Widget visit(BuildContext context,
     required Visite visite,
     required bool isFirst}) {
   // print(visite);
-  return ElevatedButton(
-    onPressed: () {
+  return GestureDetector(
+    onTap: () {
       Navigator.push(
         context,
         PageTransition(
@@ -189,7 +195,7 @@ Widget visit(BuildContext context,
       );
     },
     child: Container(
-      margin: const EdgeInsets.only(right: 20),
+      //margin: const EdgeInsets.only(right: 20),
       padding: const EdgeInsets.symmetric(
         horizontal: 25,
         vertical: 25,
@@ -219,6 +225,11 @@ Widget visit(BuildContext context,
                     color: const Color(0xFF1e79d6),
                     width: 3,
                   ),
+                ),
+                child: const Icon(
+                  Icons.person,
+                  size: 20,
+                  color: Color(0xFF1e79d6),
                 ),
               ),
               Column(
@@ -328,12 +339,6 @@ Widget visit(BuildContext context,
           ),
         ],
       ),
-    ),
-    style: ElevatedButton.styleFrom(
-      padding: const EdgeInsets.all(0),
-      primary: const Color(0xFFffffff),
-      elevation: 0,
-      shadowColor: Colors.transparent,
     ),
   );
 }

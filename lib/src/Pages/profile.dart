@@ -70,6 +70,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 4,
                       ),
                     ),
+                    child: const Icon(
+                      Icons.person,
+                      size: 40,
+                      color: Color(0xFFffffff),
+                    ),
                   ),
                   const SizedBox(
                     width: 20,
@@ -380,22 +385,54 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 50,
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => FirstPage(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => FirstPage(),
+                      ),
+                          (route) => false,
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1c50a7),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Logout',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFffffff),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF32dba9),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: const Icon(
+                            Icons.logout,
+                            color: Color(0xFFffffff),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  (route) => false,
-                );
-              },
-              child: const Text('Logout'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Model.deleteAll();
-              },
-              child: const Text('Delete All'),
+                ),
+              ],
             ),
           ],
         ),

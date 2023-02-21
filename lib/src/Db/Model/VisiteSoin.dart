@@ -36,7 +36,7 @@ class VisiteSoin
       soin,
       soin.idCategorieSoins,
       soin.idTypeSoins,
-      false,
+      true,
       true,
     );
     VisiteSoinRepository.add(visiteSoin);

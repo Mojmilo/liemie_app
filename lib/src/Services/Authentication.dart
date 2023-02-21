@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:liemie_app/src/Db/Model/Personne.dart';
+import 'package:liemie_app/src/Db/Model/Visite.dart';
 import 'package:liemie_app/src/Db/Query.dart';
 import 'package:liemie_app/src/Db/Repository/VisiteRepository.dart';
 import 'package:liemie_app/src/Pages/app.dart';
@@ -31,24 +32,14 @@ class Authentication
           if (data != false) {
             initTable();
 
-            // Navigator.push(
-            //   context,
-            //   PageTransition(
-            //     child: AppPage(
-            //       personne: infirmiere,
-            //       visites: VisiteRepository.visites,
-            //     ),
-            //     type: PageTransitionType.fade,
-            //   ),
-            // );
-
             data['login'] = login;
             data['password'] = md5.convert(utf8.encode(password)).toString();
 
             Query.insertPersonneByData(data);
 
             infirmiere = Personne.fromJson(data);
-            Query.selectVisitesInfirmiere(infirmiere);
+            //bool res = await QueryApi.getVisitesInfirmiere(infirmiere);
+            List<Visite> visites = await Query.selectVisitesInfirmiere(infirmiere);
           } else {
             infirmiere = null;
           }
@@ -65,10 +56,10 @@ class Authentication
     }
   }
 
-  static initTable() async {
-    await Query.createTablePersonne();
-    await Query.createTableVisite();
-    await Query.createTableSoin();
-    await Query.createTableVisiteSoin();
+  static initTable() {
+    Query.createTablePersonne();
+    Query.createTableVisite();
+    Query.createTableSoin();
+    Query.createTableVisiteSoin();
   }
 }

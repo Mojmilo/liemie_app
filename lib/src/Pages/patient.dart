@@ -73,6 +73,11 @@ class _PatientPageState extends State<PatientPage> {
                                 width: 4,
                               ),
                             ),
+                            child: const Icon(
+                              Icons.person,
+                              size: 40,
+                              color: Color(0xFFffffff),
+                            ),
                           ),
                           const SizedBox(
                             width: 20,

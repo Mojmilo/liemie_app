@@ -130,7 +130,6 @@ class Query
       List<Map<String, dynamic>> queryRows =
         await db.rawQuery('SELECT * FROM visite WHERE infirmiere = ${infirmiere.id}');
 
-      List<Visite> visites = [];
       for (var i = 0; i < queryRows.length; i++) {
         Personne? personne =
           await selectPersonneByIdPersonne(int.parse(queryRows[i]['patient'].toString()));
@@ -138,13 +137,10 @@ class Query
           await selectVisiteSoinsByIdVisite(int.parse(queryRows[i]['id'].toString()));
 
         if(personne != null) {
-          visites.add(Visite.fromJson(queryRows[i], personne, infirmiere, visiteSoins));
-          VisiteRepository.setVisites(visites);
-          visitesResponse = visites;
-        } else {
-          visitesResponse = [];
+          visitesResponse.add(Visite.fromJson(queryRows[i], personne, infirmiere, visiteSoins));
         }
       }
+      VisiteRepository.setVisites(visitesResponse);
 
       return visitesResponse;
     } catch (e) {
@@ -192,8 +188,6 @@ class Query
           VisiteSoin visiteSoin = VisiteSoin.fromJson(queryRows[i], visite, soin);
           VisiteSoinRepository.add(visiteSoin);
           visiteSoins.add(visiteSoin);
-        } else {
-          visiteSoins = [];
         }
 
       }
