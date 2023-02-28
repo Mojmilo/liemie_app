@@ -1018,7 +1018,7 @@ void main() {
       "id_soin": "1",
       "id_categ_soins": "1",
       "id_type_soins": "1",
-      "prevue": "1",
+      "prevu": "1",
       "realise": "1",
     };
     Query.insertVisiteSoinByData(data);

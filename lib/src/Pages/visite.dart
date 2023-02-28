@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:liemie_app/src/Db/Model/Personne.dart';
 import 'package:liemie_app/src/Db/Model/Visite.dart';
 import 'package:liemie_app/src/Db/Model/VisiteSoin.dart';
+import 'package:liemie_app/src/Db/Repository/VisiteSoinRepository.dart';
+import 'package:liemie_app/src/Pages/home.dart';
 import 'package:liemie_app/src/Pages/newSoin.dart';
 import 'package:liemie_app/src/Pages/visiteSettings.dart';
 import 'package:page_transition/page_transition.dart';
@@ -111,8 +113,9 @@ class _VisitePageState extends State<VisitePage> {
               child: ListView.builder(
                 itemCount: widget.visite.visiteSoins.length,
                 itemBuilder: (context, index) {
-                  return SoinWidget(
-                      visiteSoin: widget.visite.visiteSoins[index]);
+                  //return SoinWidget(
+                  //    visiteSoin: widget.visite.visiteSoins[index]);
+                  return builde(context, widget.visite.visiteSoins[index]);
                 },
               ),
             ),
@@ -121,19 +124,7 @@ class _VisitePageState extends State<VisitePage> {
       ),
     );
   }
-}
-
-class SoinWidget extends StatefulWidget {
-  const SoinWidget({super.key, required this.visiteSoin});
-  final VisiteSoin visiteSoin;
-
-  @override
-  State<SoinWidget> createState() => _SoinWidgetState();
-}
-
-class _SoinWidgetState extends State<SoinWidget> {
-  @override
-  Widget build(BuildContext context) {
+  Widget builde(BuildContext context, VisiteSoin visiteSoin) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -141,7 +132,7 @@ class _SoinWidgetState extends State<SoinWidget> {
       // width: 200,
       height: 100,
       decoration: BoxDecoration(
-        color: widget.visiteSoin.isRealise
+        color: visiteSoin.isRealise
             ? const Color(0x77dcedff)
             : const Color(0xFFdcedff),
         borderRadius: BorderRadius.circular(10),
@@ -151,39 +142,45 @@ class _SoinWidgetState extends State<SoinWidget> {
         children: [
           Row(
             children: [
-              !widget.visiteSoin.isPrevu
+              visiteSoin.isPrevu
                   ? IconButton(
-                      onPressed: () {
-                        widget.visiteSoin
-                            .setIsRealise(!widget.visiteSoin.isRealise);
-                        setState(() {});
-                      },
-                      icon: widget.visiteSoin.isRealise
-                          ? const Icon(
-                              Icons.check_box,
-                              color: Color(0xFF1c50a7),
-                            )
-                          : const Icon(
-                              Icons.check_box_outline_blank_outlined,
-                              color: Color(0xFF1c50a7),
-                            ),
-                    )
-                  : const Icon(
-                      Icons.check_box,
-                      color: Color(0xFF1c50a7),
-                    ),
-              SizedBox(
+                onPressed: () {
+                  visiteSoin
+                      .setIsRealise(!visiteSoin.isRealise);
+                  setState(() {});
+                },
+                icon: visiteSoin.isRealise
+                    ? const Icon(
+                  Icons.check_box,
+                  color: Color(0xFF1c50a7),
+                )
+                    : const Icon(
+                  Icons.check_box_outline_blank_outlined,
+                  color: Color(0xFF1c50a7),
+                ),
+              )
+                  : IconButton(
+                onPressed: () {
+                  VisiteSoin.removeVisiteSoin(visiteSoin);
+                  setState(() {}); // ici
+                },
+                icon: const Icon(
+                  Icons.indeterminate_check_box,
+                  color: Color(0xFF1c50a7),
+                ),
+              ),
+              const SizedBox(
                 width: 10,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Soin ${widget.visiteSoin.soin.id}',
+                    'Soin ${visiteSoin.soin.id}',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      decoration: widget.visiteSoin.isRealise
+                      decoration: visiteSoin.isRealise
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
                     ),
@@ -194,7 +191,7 @@ class _SoinWidgetState extends State<SoinWidget> {
                   Container(
                     width: 200,
                     child: Text(
-                      '${widget.visiteSoin.soin.libel}',
+                      '${visiteSoin.soin.libel}',
                       style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,

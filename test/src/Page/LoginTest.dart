@@ -64,6 +64,34 @@ void main() {
       // Assert
       expect(visiteSoins.length, 2);
     });
+
+    test('loginWithoutChargeApiGetInfosVisiteSoins', () async {
+      // Arrange
+
+      // Act
+      Personne? infirmiere = await Authentication.authenticate('lwald', 'lwald');
+      List<Visite> visites = await Query.selectVisitesInfirmiere(infirmiere!);
+
+      // Assert
+      expect(infirmiere, isNotNull);
+      expect(visites.length, 8);
+
+      // Act
+      List<VisiteSoin> visiteSoins = await Query.selectVisiteSoinsByIdVisite(visites.first.id);
+      bool isPrevu = visiteSoins.first.isPrevu;
+      visiteSoins.first.isPrevu = false;
+      await Query.updateVisiteSoinIsPrevu(visiteSoins.first);
+
+      // Assert
+      expect(isPrevu, true);
+
+      // Act
+      List<VisiteSoin> visiteSoins2 = await Query.selectVisiteSoinsByIdVisite(visites.first.id);
+      bool isPrevu2 = visiteSoins2.first.isPrevu;
+
+      // Assert
+      expect(isPrevu2, false);
+    });
   });
 }
 

@@ -132,7 +132,7 @@ class QueryApi
             'id_soin': data[i]['id_soins'],
             'id_categ_soins': data[i]['id_categ_soins'],
             'id_type_soins': data[i]['id_type_soins'],
-            'prevue': data[i]['prevu'],
+            'prevu': data[i]['prevu'],
             'realise': data[i]['realise'],
           };
 

@@ -92,7 +92,7 @@ class Query
         'id_categ_soins INTEGER,'
         'id_type_soins INTEGER,'
         'id_soin INTEGER,'
-        'prevue INTEGER,'
+        'prevu INTEGER,'
         'realise INTEGER,'
         'PRIMARY KEY(id_visite, id_soin),'
         'FOREIGN KEY(id_visite) REFERENCES visite(id),'
@@ -275,11 +275,22 @@ class Query
     }
   }
 
+  static updateVisiteSoinIsPrevu(VisiteSoin visiteSoin) async {
+    try {
+      List<Map<String, dynamic>> data = [];
+      final Database db = await Connection.database;
+      List<Map<String, dynamic>> queryRows = await db.rawQuery(
+          'UPDATE visite_soin SET prevu = ${visiteSoin.isPrevu ? 1 : 0} WHERE id_visite = ${visiteSoin.visite.id} AND id_soin = ${visiteSoin.soin.id}');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   static insertVisiteSoin(VisiteSoin visiteSoin) async {
     try {
       final Database db = await Connection.database;
       List<Map<String, dynamic>> queryRows = await db.rawQuery(
-          'INSERT INTO visite_soin (id_visite, id_categ_soins, id_type_soins, id_soin, prevue, realise) VALUES (${visiteSoin.visite.id}, ${visiteSoin.idCategorieSoins}, ${visiteSoin.idTypeSoins}, ${visiteSoin.soin.id}, ${visiteSoin.isPrevu ? 1 : 0}, ${visiteSoin.isRealise ? 1 : 0})');
+          'INSERT INTO visite_soin (id_visite, id_categ_soins, id_type_soins, id_soin, prevu, realise) VALUES (${visiteSoin.visite.id}, ${visiteSoin.idCategorieSoins}, ${visiteSoin.idTypeSoins}, ${visiteSoin.soin.id}, ${visiteSoin.isPrevu ? 1 : 0}, ${visiteSoin.isRealise ? 1 : 0})');
     } catch (e) {
       rethrow;
     }
@@ -437,6 +448,16 @@ class Query
     try {
       final Database db = await Connection.database;
       await db.execute('DROP TABLE IF EXISTS visite_soin');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static deleteVisiteSoin(VisiteSoin visiteSoin) async {
+    try {
+      final Database db = await Connection.database;
+      List<Map<String, dynamic>> queryRows = await db.rawQuery(
+          'DELETE FROM visite_soin WHERE id_visite = ${visiteSoin.visite.id} AND id_soin = ${visiteSoin.soin.id}');
     } catch (e) {
       rethrow;
     }

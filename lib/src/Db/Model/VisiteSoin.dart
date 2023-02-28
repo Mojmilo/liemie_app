@@ -30,17 +30,28 @@ class VisiteSoin
     Query.updateVisiteSoinIsRealise(this);
   }
 
+  void setIsPrevu(bool isPrevu) {
+    this.isPrevu = isPrevu;
+    Query.updateVisiteSoinIsPrevu(this);
+  }
+
   static addVisiteSoin(Visite visite, Soin soin) {
     VisiteSoin visiteSoin = VisiteSoin(
       visite,
       soin,
       soin.idCategorieSoins,
       soin.idTypeSoins,
-      true,
+      false,
       true,
     );
     VisiteSoinRepository.add(visiteSoin);
     visite.visiteSoins.add(visiteSoin);
     Query.insertVisiteSoin(visiteSoin);
+  }
+
+  static removeVisiteSoin(VisiteSoin visiteSoin) {
+    VisiteSoinRepository.remove(visiteSoin);
+    visiteSoin.visite.visiteSoins.remove(visiteSoin);
+    Query.deleteVisiteSoin(visiteSoin);
   }
 }

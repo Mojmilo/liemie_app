@@ -1,4 +1,5 @@
 import 'package:liemie_app/src/Db/Model/VisiteSoin.dart';
+import 'package:liemie_app/src/Db/Query.dart';
 
 class VisiteSoinRepository
 {
@@ -11,6 +12,10 @@ class VisiteSoinRepository
 
   static add(VisiteSoin visiteSoin) {
     visiteSoins.add(visiteSoin);
+  }
+
+  static remove(VisiteSoin visiteSoin) {
+    visiteSoins.remove(visiteSoin);
   }
 
   static setVisiteSoins(List<VisiteSoin> visiteSoins) {
