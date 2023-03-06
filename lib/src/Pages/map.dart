@@ -61,26 +61,30 @@ class _MapPageState extends State<MapPage> {
               Marker(
                 point:
                     LatLng(widget.position.latitude, widget.position.longitude),
-                width: 50,
-                height: 50,
                 builder: (context) => Container(
-                  child: const Icon(
-                    Icons.location_on,
-                    color: Colors.red,
-                    size: 50,
+                  child: IconButton(
+                    icon: const Icon(Icons.location_on,
+                        color: Colors.red,
+                        size: 50
+                    ),
+                    onPressed: () {
+                      print('ok');
+                    },
                   ),
                 ),
               ),
               Marker(
                 point:
                     LatLng(widget.location.latitude, widget.location.longitude),
-                width: 50,
-                height: 50,
                 builder: (context) => Container(
-                  child: const Icon(
-                    Icons.location_history,
-                    color: Colors.red,
-                    size: 50,
+                  child: IconButton(
+                    icon: const Icon(Icons.location_history,
+                        color: Colors.red,
+                        size: 50
+                    ),
+                    onPressed: () {
+                      print('ok');
+                    },
                   ),
                 ),
               ),
